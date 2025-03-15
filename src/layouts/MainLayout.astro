@@ -15,9 +15,11 @@ const title = siteConfig.title;
     <meta name="generator" content={Astro.generator}/>
     <title>{title}</title>
 </head>
-<body>
+<body "flex flex-col min-h-screen">
 <NavBar></NavBar>
-<slot/>
+<main class="flex-1 pt-[64px]">
+    <slot/>
+</main>
 <Footer/>
 </body>
 </html>
