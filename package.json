@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prettier": "prettier . --write"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
@@ -16,6 +17,7 @@
     "tailwindcss": "^4.0.14"
   },
   "devDependencies": {
-    "@types/justified-layout": "^4.1.4"
+    "@types/justified-layout": "^4.1.4",
+    "prettier": "3.5.3"
   }
 }

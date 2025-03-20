@@ -1,15 +1,12 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import {Content as AboutPage} from "../content/about.md"
-import { getEntry, render } from 'astro:content';
-
 ---
 <MainLayout>
     <section class="py-16 px-4 md:py-24">
         <div class="max-w-3xl mx-auto">
             <h1 class="text-4xl md:text-5xl font-bold mb-8">About LENSCAPE</h1>
             <AboutPage></AboutPage>
-
         </div>
     </section>
-</MainLayout> 
+</MainLayout>
