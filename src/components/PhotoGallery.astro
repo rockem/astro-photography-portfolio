@@ -118,12 +118,12 @@
     container.style.height = layout.containerHeight + 'px';
 
     container.innerHTML = layout.boxes.map((box, i) => `
-      <a href="${images[i].src}" 
-         class="glightbox absolute transition-transform hover:scale-[1.02] hover:z-10" 
+      <a href="${images[i].src}"
+         class="glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
          style="top: ${box.top}px; left: ${box.left}px; width: ${box.width}px; height: ${box.height}px;">
-        <img src="${images[i].src}" 
+        <img src="${images[i].src}"
              loading="lazy"
-             class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow" 
+             class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow"
              alt="${images[i].alt}" />
       </a>
     `).join("");
