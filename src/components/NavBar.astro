@@ -1,4 +1,7 @@
 ---
+import {siteConfig} from "../config";
+
+const title = siteConfig.title;
 const menuItems = [
     { name: "Home", link: "/" },
     { name: "Gallery", link: "/gallery" },
@@ -12,9 +15,9 @@ const menuItems = [
      class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
      :class="scrolled ? 'py-3 bg-white shadow-sm' : 'py-5 bg-transparent'"
 >
-    <div class="container mx-auto px-6 flex justify-between items-center">
-        <a href="/" class="text-xl md:text-2xl font-semibold tracking-tight">
-            LENSCAPE
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-xl md:text-2xl font-playfair font-semibold tracking-tight">
+            {title}
         </a>
 
         <!-- Desktop Menu -->

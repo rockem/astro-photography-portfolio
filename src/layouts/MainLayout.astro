@@ -1,5 +1,5 @@
 ---
-import './src/styles/global.css'
+import '../styles/global.css'
 import { siteConfig } from "../config";
 import Footer from "../components/Footer.astro";
 import NavBar from "../components/NavBar.astro";
@@ -7,7 +7,7 @@ import NavBar from "../components/NavBar.astro";
 const title = siteConfig.title;
 ---
 
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="utf-8"/>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -15,12 +15,12 @@ const title = siteConfig.title;
     <meta name="generator" content={Astro.generator}/>
     <title>{title}</title>
 </head>
-<body "flex flex-col min-h-screen">
-<NavBar></NavBar>
-<main class="flex-1 pt-[64px]">
-    <slot/>
-</main>
-<Footer/>
+<body class="flex flex-col min-h-screen">
+    <NavBar />
+    <main class="flex-1">
+        <slot/>
+    </main>
+    <Footer />
 </body>
 </html>
 

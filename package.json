@@ -11,7 +11,11 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
     "astro": "^5.5.2",
+    "justified-layout": "^4.1.0",
     "lucide-astro": "^0.479.0",
     "tailwindcss": "^4.0.14"
+  },
+  "devDependencies": {
+    "@types/justified-layout": "^4.1.4"
   }
 }
