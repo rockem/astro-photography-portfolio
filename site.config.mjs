@@ -11,4 +11,4 @@ export default {
       icon: Instagram,
     },
   ],
-}
+};
