@@ -32,4 +32,6 @@ jobs:
           folder: dist
           repository-name: rockem/photography-portfolio
           token: ${{ secrets.DEPLOY_TOKEN }}
-          clean-exclude: README.md
+          clean-exclude: |
+            README.md
+            .nojekyll
