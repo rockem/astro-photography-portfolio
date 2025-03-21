@@ -8,6 +8,9 @@ const menuItems = [
     { name: "About", link: "./about" }
 ];
 ---
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
 <nav x-data="{ isOpen: false, scrolled: false }"
      @scroll.window="scrolled = window.scrollY > 50"
@@ -15,7 +18,7 @@ const menuItems = [
      :class="scrolled ? 'py-3 bg-white shadow-sm' : 'py-5 bg-transparent'"
 >
     <div class="container mx-auto flex justify-between items-center">
-        <a href="/" class="text-xl md:text-2xl font-playfair font-semibold tracking-tight">
+        <a href="/" id="logo" class="text-2xl md:text-4xl font-semibold tracking-tight">
             {title}
         </a>
 
