@@ -1,6 +1,6 @@
 import { Github, Instagram } from "lucide-astro";
 
-export const siteConfig = {
+export default {
   title: "ES",
   owner: "Eli Segal",
   socialLinks: [
