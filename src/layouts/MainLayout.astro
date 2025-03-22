@@ -6,12 +6,13 @@ import NavBar from "../components/NavBar.astro";
 
 const title = siteConfig.title;
 const favicon = siteConfig.favicon;
+const base = import.meta.env.BASE_URL;
 ---
 
 <html lang="en" class="h-full">
 <head>
     <meta charset="utf-8"/>
-    <link rel="icon" type="image/x-icon" href={favicon}/>
+    <link rel="icon" type="image/x-icon" href={`${base}/${favicon}`}/>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

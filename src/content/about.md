@@ -1,5 +1,6 @@
 ---
 title: About me page
+layout: ../pages/about.astro
 ---
 
 ## Hi, I'm Eli Segal 👋
