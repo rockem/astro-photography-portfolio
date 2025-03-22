@@ -48,6 +48,10 @@
 }
 
 @layer components {
+  .container-custom {
+    @apply max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
   .nav-link {
     @apply relative text-base font-medium text-gray-800 transition-all duration-300 hover:text-black;
   }

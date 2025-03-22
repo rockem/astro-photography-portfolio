@@ -1,12 +1,37 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import {Content as AboutPage} from "../content/about.md"
+import siteConfig from "../../site.config.mjs";
+
+const owner = siteConfig.owner;
+
 ---
 <MainLayout>
-    <section class="py-16 px-4 md:py-24">
-        <div class="max-w-3xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-bold mb-8">About LENSCAPE</h1>
-            <AboutPage></AboutPage>
+    <section class="pt-32 pb-20">
+        <div class="container-custom">
+            <div class="max-w-2xl mx-auto text-center mb-16">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">About Me</h1>
+
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <img
+                            src=""
+                            alt="eli"
+                            class="w-full h-auto rounded-lg shadow-lg cursor-pointer"
+
+                    />
+                </div>
+
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">{owner}</h2>
+                    <p class="text-gray-700 mb-6">
+                        <AboutPage></AboutPage>
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
-</MainLayout>
+
+    </MainLayout>
