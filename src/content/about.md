@@ -13,7 +13,7 @@ I find inspiration in movement, rhythm, and everyday life.
 
 &nbsp;
 
-### 📷 **Photography Style**
+### 📷 Photography Style
 
 I focus on street, travel, everyday life photography and of course family photography,
 seeking raw, authentic, and sometimes unexpected beauty in the world around me.

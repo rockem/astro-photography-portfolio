@@ -4,6 +4,7 @@ import {Content as AboutPage} from "../content/about.md"
 import siteConfig from "../../site.config.mjs";
 
 const owner = siteConfig.owner;
+const base = import.meta.env.BASE_URL;
 
 ---
 <MainLayout>
@@ -17,8 +18,8 @@ const owner = siteConfig.owner;
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <img
-                            src=""
-                            alt="eli"
+                            src=`${base}images/profile.jpg`
+                            alt="Profile image"
                             class="w-full h-auto rounded-lg shadow-lg cursor-pointer"
 
                     />
