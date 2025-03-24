@@ -4,7 +4,7 @@ import siteConfig from "../../site.config.mjs"
 import Footer from "../components/Footer.astro";
 import NavBar from "../components/NavBar.astro";
 
-const title = siteConfig.title;
+const owner = siteConfig.owner;
 const favicon = siteConfig.favicon;
 const base = import.meta.env.BASE_URL;
 ---
@@ -20,7 +20,7 @@ const base = import.meta.env.BASE_URL;
 
     <meta name="viewport" content="width=device-width"/>
     <meta name="generator" content={Astro.generator}/>
-    <title>{title}</title>
+    <title>{owner}</title>
 </head>
 <body class="flex flex-col min-h-screen">
     <NavBar />
