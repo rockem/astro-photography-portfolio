@@ -4,6 +4,8 @@ import {Content as AboutPage} from "../content/about.md"
 import siteConfig from "../../site.config.mjs";
 
 const owner = siteConfig.owner;
+const base = import.meta.env.BASE_URL;
+
 ---
 <MainLayout>
     <section class="pt-32 pb-20">
@@ -16,9 +18,10 @@ const owner = siteConfig.owner;
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <img
-                            src=""
-                            alt="eli"
-                            class="w-full h-auto rounded-lg shadow-lg cursor-pointer"
+                            src=`${base}/images/profile.jpg`
+                            alt="Profile image"
+                            class="w-full h-auto rounded-lg shadow-lg border-8 my-4 border-white md:p-4"
+                            width="720" height="720"
 
                     />
                 </div>
