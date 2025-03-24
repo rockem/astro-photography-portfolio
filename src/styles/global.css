@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @config "../../tailwind.config";
 
@@ -48,6 +49,10 @@
 }
 
 @layer components {
+  .container-custom {
+    @apply max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
   .nav-link {
     @apply relative text-base font-medium text-gray-800 transition-all duration-300 hover:text-black;
   }

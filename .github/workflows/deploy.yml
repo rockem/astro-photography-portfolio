@@ -1,5 +1,8 @@
 name: Deploy Astro Site
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -28,10 +31,4 @@ jobs:
       - name: Deploy to photography-portfolio repository
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: main
           folder: dist
-          repository-name: rockem/photography-portfolio
-          token: ${{ secrets.DEPLOY_TOKEN }}
-          clean-exclude: |
-            README.md
-            .nojekyll
