@@ -1,14 +1,15 @@
 import { Github, Instagram } from "lucide-astro";
 
 export default {
-  title: "ES",
+  title: "SR",
   favicon: "favicon.ico",
-  owner: "Eli Segal",
+  owner: "Sara Richard",
+  profileImage: "profile.webp",
   socialLinks: [
-    { name: "GitHub", url: "https://github.com/rockem", icon: Github },
+    { name: "GitHub", url: "https://github.com", icon: Github },
     {
       name: "Instagram",
-      url: "https://www.instagram.com/lesegal/",
+      url: "https://www.instagram.com",
       icon: Instagram,
     },
   ],

@@ -1,16 +1,14 @@
 ---
-title: About me page
+title: About me
 ---
 
-### Hi, I'm Eli Segal 👋
+### Hi, I'm Sara Richard 👋
 
-I'm a software architect by profession reside in israel,
-and creativity drives everything I do.
-Whether it's capturing fleeting moments through my Leica Q3,
-writing and producing music, coding my next idea,
-I find inspiration in movement, rhythm, and everyday life.
-
-### 📷 Photography Style
-
-I focus on street, travel, everyday life photography and of course family photography,
-seeking raw, authentic, and sometimes unexpected beauty in the world around me.
+I've been a photographer for over 10 years, focusing primarily on landscape and portrait photography. My journey began
+with a simple point-and-shoot camera while traveling through the mountains of Colorado, which sparked a passion that has
+taken me across the globe.
+My approach to photography centers on finding the extraordinary in ordinary moments. I believe that beauty exists
+everywhere – in urban streets, remote wilderness, and human connections. My goal is to capture these fleeting instances
+in a way that allows viewers to see the world through a different lens.
+When I'm not behind the camera, you can find me hiking in national parks, exploring new cities, or enjoying a cup of
+coffee at local cafés while planning my next photo adventure.
