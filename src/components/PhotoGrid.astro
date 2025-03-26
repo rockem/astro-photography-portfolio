@@ -1,0 +1,32 @@
+---
+const { images } = Astro.props;
+---
+
+<section id="photo-grid" class="relative w-full mx-auto overflow-hidden">
+  {images.map((image) => (
+    <a href={image.src}
+       class="photo-item glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
+       data-gallery="gallery1"
+       data-type="image"
+       data-glightbox=`title: ${image.title}`>
+      <img src={image.thumbnail}
+           class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow"
+           alt={image.alt || ""}
+           loading="lazy" />
+    </a>
+  ))}
+</section>
+
+<style>
+    .glightbox-container .gslide iframe,
+    .glightbox-container .gslide img {
+        max-width: 90vw !important;
+        max-height: 90vh !important;
+        object-fit: contain !important; /* Ensures images scale correctly */
+    }
+</style>
+
+<script>
+  import "../scripts/photo-grid"
+  import "glightbox/dist/css/glightbox.css";
+</script>
