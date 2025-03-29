@@ -1,36 +1,34 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import {Content as AboutPage} from "../content/about.md"
-import siteConfig from "../../site.config.mjs";
+import MainLayout from '../layouts/MainLayout.astro';
+import { Content as AboutPage } from '../content/about.md';
+import siteConfig from '../../site.config.mjs';
 
 const profileImage = siteConfig.profileImage;
 const base = import.meta.env.BASE_URL;
-
 ---
+
 <MainLayout>
-    <section class="pt-32 pb-20">
-        <div class="container-custom">
-            <div class="max-w-2xl mx-auto text-center mb-16">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">About Me</h1>
+	<section class="pt-32 pb-20">
+		<div class="container-custom">
+			<div class="max-w-2xl mx-auto text-center mb-16">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">About Me</h1>
+			</div>
 
-            </div>
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+				<div>
+					<img
+						src=`${base}/images/${profileImage}`
+						alt="Profile image"
+						class="w-full h-auto rounded-lg shadow-lg border-8 my-4 border-white md:p-4"
+						width="720"
+						height="720"
+					/>
+				</div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <img
-                            src=`${base}/images/${profileImage}`
-                            alt="Profile image"
-                            class="w-full h-auto rounded-lg shadow-lg border-8 my-4 border-white md:p-4"
-                            width="720" height="720"
-
-                    />
-                </div>
-
-                <div class="prose text-gray-700 mb-6">
-                    <AboutPage></AboutPage>
-                </div>
-            </div>
-        </div>
-    </section>
-
+				<div class="prose text-gray-700 mb-6">
+					<AboutPage />
+				</div>
+			</div>
+		</div>
+	</section>
 </MainLayout>

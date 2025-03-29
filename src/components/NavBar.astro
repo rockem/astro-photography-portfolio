@@ -1,61 +1,99 @@
 ---
-import siteConfig from "../../site.config.mjs"
+import siteConfig from '../../site.config.mjs';
 
 const title = siteConfig.title;
+
 const base = import.meta.env.BASE_URL;
 const menuItems = [
-    { name: "Home", link: `${base}` },
-    { name: "Gallery", link: `${base}/gallery` },
-    { name: "About", link: `${base}/about` }
+	{ name: 'Home', link: `${base}` },
+	{ name: 'Gallery', link: `${base}/gallery` },
+	{ name: 'About', link: `${base}/about` },
 ];
 ---
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 
-<nav x-data="{ isOpen: false, scrolled: false }"
-     @scroll.window="scrolled = window.scrollY > 50"
-     class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
-     :class="scrolled ? 'py-3 bg-white shadow-sm' : 'py-5 bg-transparent'"
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
+	rel="stylesheet"
+/>
+
+<nav
+	x-data="{ isOpen: false, scrolled: false }"
+	@scroll.window="scrolled = window.scrollY > 50"
+	class="fixed top-0 left-0 w-full z-50 transition-all duration-300"
+	:class="scrolled ? 'py-3 bg-white shadow-sm' : 'py-5 bg-transparent'"
 >
-    <div class="container mx-auto flex justify-between items-center">
-        <a href={base} id="logo" class="text-2xl md:text-4xl font-semibold tracking-tight">
-            {title}
-        </a>
+	<div class="container mx-auto flex justify-between items-center">
+		<a
+			href={base}
+			id="logo"
+			class="text-2xl md:text-4xl font-semibold tracking-tight"
+		>
+			{title}
+		</a>
 
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex space-x-8">
-            {menuItems.map((item) => (
-              <a href={item.link}
-                 class="nav-link relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:bg-black after:w-0 hover:after:w-full transition-all"
-                 :class="window.location.pathname === '{item.link}' ? 'after:w-full' : ''">
-                  {item.name}
-              </a>
-            ))}
-        </div>
+		<!-- Desktop Menu -->
+		<div class="hidden md:flex space-x-8">
+			{
+				menuItems.map((item) => (
+					<a
+						href={item.link}
+						class="nav-link relative after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] after:bg-black after:w-0 hover:after:w-full transition-all"
+					>
+						{item.name}
+					</a>
+				))
+			}
+		</div>
 
-        <!-- Mobile Menu Button -->
-        <button @click="isOpen = !isOpen" class="md:hidden text-gray-800 focus:outline-none">
-            <svg x-show="!isOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-            <svg x-show="isOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-    </div>
+		<!-- Mobile Menu Button -->
+		<button
+			@click="isOpen = !isOpen"
+			class="md:hidden text-gray-800 focus:outline-none"
+		>
+			<svg
+				x-show="!isOpen"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16M4 18h16"></path>
+			</svg>
+			<svg
+				x-show="isOpen"
+				class="h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+		</button>
+	</div>
 
-    <!-- Mobile Menu -->
-    <div x-show="isOpen" class="md:hidden absolute top-full left-0 w-full bg-white shadow-md">
-        <div class="flex flex-col py-4 px-6 space-y-4">
-            {menuItems.map((item) => (
-              <a href={item.link}
-                 class="text-lg"
-                 :class="window.location.pathname === '{item.link}' ? 'font-medium' : ''"
-                 @click="isOpen = false">
-                  {item.name}
-              </a>
-            ))}
-        </div>
-    </div>
+	<!-- Mobile Menu -->
+	<div
+		x-show="isOpen"
+		class="md:hidden absolute top-full left-0 w-full bg-white shadow-md"
+	>
+		<div class="flex flex-col py-4 px-6 space-y-4">
+			{
+				menuItems.map((item) => (
+					<a href={item.link} class="text-lg" @click="isOpen = false">
+						{item.name}
+					</a>
+				))
+			}
+		</div>
+	</div>
 </nav>
