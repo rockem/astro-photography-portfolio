@@ -1,6 +1,6 @@
 ---
-import {Instagram, Github } from "lucide-astro";
-import siteConfig from "../../site.config.mjs"
+import siteConfig from '../../site.config.mjs';
+import SocialIcon from './SocialIcon.astro';
 
 const year = new Date().getFullYear();
 const owner = siteConfig.owner;
@@ -8,25 +8,20 @@ const socialLinks = siteConfig.socialLinks;
 ---
 
 <footer class="py-10 border-t border-gray-100 mt-auto">
-    <div class="container mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-            <div class="text-sm font-sans text-gray-500 mb-4 md:mb-0">
-                © {year} {owner}. All rights reserved.
-            </div>
+	<div class="container mx-auto">
+		<div class="flex flex-col md:flex-row justify-between items-center">
+			<div class="text-sm font-sans text-gray-500 mb-4 md:mb-0">
+				© {year}
+				{owner}. All rights reserved.
+			</div>
 
-            <div class="flex space-x-6">
-              {socialLinks.map(({name, url, icon:Icon}) => (
-                      <a
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="text-gray-500 hover:text-gray-800 transition-colors duration-200"
-                              aria-label={name}
-                      >
-                          <Icon size={20}/>
-                      </a>
-              ))}
-            </div>
-        </div>
-    </div>
+			<div class="flex space-x-6">
+				{
+					socialLinks.map((socialLink) => (
+						<SocialIcon socialLink={socialLink} />
+					))
+				}
+			</div>
+		</div>
+	</div>
 </footer>
