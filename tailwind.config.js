@@ -1,5 +1,3 @@
-import type { Config } from 'tailwindcss';
-
 export default {
 	prefix: '',
 	theme: {
@@ -89,4 +87,4 @@ export default {
 			},
 		},
 	},
-} satisfies Config;
+};
