@@ -7,20 +7,36 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"prettier": "prettier . --write"
+		"prettier": "prettier . --write",
+		"update-gallery": "tsx scripts/updateGallery",
+		"test": "vitest",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run"
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.0.14",
+		"@types/commander": "^2.12.0",
+		"@types/glob": "^8.1.0",
+		"@types/sharp": "^0.31.1",
 		"astro": "^5.5.2",
+		"commander": "^13.1.0",
 		"glightbox": "^3.3.1",
+		"glob": "^11.0.1",
 		"justified-layout": "^4.1.0",
 		"lucide-astro": "^0.479.0",
+		"sharp": "^0.33.5",
 		"tailwindcss": "^4.0.14"
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.16",
+		"@types/js-yaml": "^4.0.9",
 		"@types/justified-layout": "^4.1.4",
+		"@types/node": "^22.13.17",
+		"@vitest/ui": "^3.1.1",
+		"js-yaml": "^4.1.0",
 		"prettier": "3.5.3",
-		"prettier-plugin-astro": "^0.14.1"
+		"prettier-plugin-astro": "^0.14.1",
+		"tsx": "^4.19.3",
+		"vitest": "^3.1.1"
 	}
 }

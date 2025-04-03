@@ -8,6 +8,7 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+        exclude: 'public/images/galleries/*'
   - repo: local
     hooks:
       - id: prettier
