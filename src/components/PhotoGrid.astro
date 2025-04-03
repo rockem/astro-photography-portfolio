@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 const { images } = Astro.props;
 ---
 
@@ -12,11 +14,12 @@ const { images } = Astro.props;
 				data-type="image"
 				data-glightbox="`title: ${image.title}`"
 			>
-				<img
+				<Image
 					src={image.thumbnail}
+					quality={90}
+					format="webp"
 					class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow"
 					alt={image.alt || ''}
-					loading="lazy"
 				/>
 			</a>
 		))
