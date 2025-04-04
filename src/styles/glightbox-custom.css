@@ -1,0 +1,20 @@
+.glightbox-container .gslide-image img {
+	max-width: 95%;
+	max-height: 95%;
+	height: auto;
+	width: auto;
+	object-fit: contain;
+	display: block;
+}
+
+.glightbox-container .gslide {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.glightbox-container .gslide-description {
+	max-width: 90%;
+	color: #ccc;
+	font-size: 0.875rem;
+}
