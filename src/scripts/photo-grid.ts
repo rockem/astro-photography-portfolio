@@ -1,7 +1,7 @@
 import justifiedLayout from 'justified-layout';
 import GLightbox from 'glightbox';
 
-export function setupGallery() {
+export async function setupGallery() {
 	if (typeof document === 'undefined') return;
 
 	const container = document.getElementById('photo-grid');
@@ -10,60 +10,111 @@ export function setupGallery() {
 		return;
 	}
 
-	const images = Array.from(
+	const imageLinks = Array.from(
 		container.querySelectorAll('.photo-item'),
 	) as HTMLElement[];
-	if (images.length === 0) {
+
+	if (imageLinks.length === 0) {
 		console.warn('No images found inside the photo grid.');
 		return;
 	}
 
-	// Define aspect ratio data for layout
-	const imageSizes = images.map((img) => {
-		const width = img.getBoundingClientRect().width || 300; // Default width
-		const height = img.getBoundingClientRect().height || 200; // Default height
-		return { width, height };
+	// Wait for all images to load
+	const imageElements = await waitForImagesToLoad(container);
+
+	// Get actual image dimensions after loading
+	const layout = createLayoutFor(imageElements, container);
+	console.log('Generated layout:', layout);
+
+	applyImagesStyleBasedOnLayout(imageLinks, layout);
+	applyContainerStyleBasedOnLayout(container, layout);
+
+	// Initialize GLightbox
+	GLightbox({
+		selector: '.glightbox',
+		openEffect: 'zoom',
+		closeEffect: 'fade',
+		width: 'auto',
+		height: 'auto',
 	});
+}
+
+function createLayoutFor(
+	imageElements: HTMLImageElement[],
+	container: HTMLElement,
+): any {
+	const imageSizes = imageElements.map((img) => ({
+		width: img.naturalWidth || img.width || 300,
+		height: img.naturalHeight || img.height || 200,
+	}));
 
 	const layout = justifiedLayout(imageSizes, {
 		containerWidth: container.clientWidth || window.innerWidth,
-		targetRowHeight: 200,
+		targetRowHeight: 300,
 		boxSpacing: 10,
+		containerPadding: 0,
 	});
+	return layout;
+}
 
-	console.log('Generated layout:', layout);
+async function waitForImagesToLoad(container: HTMLElement) {
+	const imageElements = Array.from(
+		container.querySelectorAll('img'),
+	) as HTMLImageElement[];
 
-	// Apply styles based on the layout
-	images.forEach((el, i) => {
+	await Promise.all(
+		imageElements.map(
+			(img) =>
+				new Promise((resolve) => {
+					if (img.complete) {
+						resolve(null);
+					} else {
+						img.onload = () => resolve(null);
+						img.onerror = () => resolve(null);
+					}
+				}),
+		),
+	);
+	return imageElements;
+}
+
+function applyImagesStyleBasedOnLayout(imageLinks: HTMLElement[], layout: any) {
+	imageLinks.forEach((el, i) => {
 		if (!layout.boxes[i]) return;
 		const { left, top, width, height } = layout.boxes[i];
-
-		// Ensure the parent container has relative positioning
-		container.style.position = 'relative';
 
 		el.style.position = 'absolute';
 		el.style.left = `${left}px`;
 		el.style.top = `${top}px`;
 		el.style.width = `${width}px`;
 		el.style.height = `${height}px`;
-		el.style.display = 'block'; // Ensure it's visible
+		el.style.display = 'block';
 	});
-
-	// Adjust container height based on the layout
-	container.style.height = `${layout.containerHeight}px`;
-
-	console.log('Final container height set to:', layout.containerHeight);
-
-	const lightbox = GLightbox({
-		loop: true,
-		draggable: false,
-	});
-
-	console.log('GLightbox initialized:', lightbox);
 }
 
+function applyContainerStyleBasedOnLayout(container: HTMLElement, layout: any) {
+	// Ensure the parent container has relative positioning
+	container.style.position = 'relative';
+	// Set container height
+	container.style.height = `${layout.containerHeight}px`;
+}
 // Run setupGallery once the page is loaded
 if (typeof window !== 'undefined') {
+	const debouncedSetup = debounce(setupGallery, 250);
+
 	document.addEventListener('DOMContentLoaded', setupGallery);
-	window.addEventListener('resize', setupGallery);
+	window.addEventListener('resize', debouncedSetup);
+}
+
+// Debounce helper
+function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
+	let timeout: ReturnType<typeof setTimeout>;
+	return function executedFunction(...args: Parameters<T>) {
+		const later = () => {
+			clearTimeout(timeout);
+			func(...args);
+		};
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+	};
 }

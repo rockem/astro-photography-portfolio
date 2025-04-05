@@ -1,4 +1,13 @@
 ---
+import 'glightbox/dist/css/glightbox.css';
+import '../styles/glightbox-custom.css';
+import { Image } from 'astro:assets';
+import type { Image as ImageType } from '../data/images';
+
+interface Props {
+	images: ImageType[];
+}
+
 const { images } = Astro.props;
 ---
 
@@ -6,33 +15,26 @@ const { images } = Astro.props;
 	{
 		images.map((image) => (
 			<a
-				href={image.src}
+				href={image.src.src}
 				class="photo-item glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
 				data-gallery="gallery1"
 				data-type="image"
-				data-glightbox="`title: ${image.title}`"
+				data-glightbox={`title: ${image.description}`}
 			>
-				<img
-					src={image.thumbnail}
+				<Image
+					src={image.src}
+					quality={90}
+					format="webp"
+					width={image.src.width}
+					height={image.src.height}
 					class="w-full h-full object-cover rounded-sm shadow-sm hover:shadow-lg transition-shadow"
-					alt={image.alt || ''}
-					loading="lazy"
+					alt={image.alt}
 				/>
 			</a>
 		))
 	}
 </section>
 
-<style>
-	.glightbox-container .gslide iframe,
-	.glightbox-container .gslide img {
-		max-width: 90vw !important;
-		max-height: 90vh !important;
-		object-fit: contain !important; /* Ensures images scale correctly */
-	}
-</style>
-
 <script>
 	import '../scripts/photo-grid';
-	import 'glightbox/dist/css/glightbox.css';
 </script>

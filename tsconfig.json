@@ -4,6 +4,7 @@
 		"module": "ESNext",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
 		"strict": true
 	},
