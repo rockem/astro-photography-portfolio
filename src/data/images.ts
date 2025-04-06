@@ -26,11 +26,7 @@ const imageModules = import.meta.glob('../gallery/**/*.{jpg,jpeg,png,gif}', {
 	eager: true,
 });
 
-// Load gallery data from YAML
-const galleryYamlPath = path.join(
-	path.dirname(fileURLToPath(import.meta.url)),
-	'../gallery/gallery.yaml',
-);
+const galleryYamlPath = path.resolve(process.cwd(), 'src/gallery/gallery.yaml');
 
 const galleryData = yaml.load(
 	await fs.readFile(galleryYamlPath, 'utf8'),
