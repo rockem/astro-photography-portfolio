@@ -1,8 +1,9 @@
 # 📸 Astro Photography Portfolio Template
 
-A modern, fast, and customizable photography portfolio template built with [Astro](https://astro.build).
-Perfect for photographers looking to showcase their work with a professional and performant website.
-Check out the [demo](https://rockem.github.io/astro-photography-portfolio/).
+A modern, fast, and highly customizable photography portfolio template built with [Astro](https://astro.build).
+Ideal for photographers who want to showcase their work through a sleek, performant, and professional website.
+
+👉 [View the demo](https://rockem.github.io/astro-photography-portfolio/)
 
 ## ✨ Features
 
