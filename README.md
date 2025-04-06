@@ -1,47 +1,116 @@
-# Astro Starter Kit: Minimal
+# 📸 Astro Photography Portfolio Template
 
-```sh
-npm create astro@latest -- --template minimal
+A modern, fast, and highly customizable photography portfolio template built with [Astro](https://astro.build).
+Ideal for photographers who want to showcase their work through a sleek, performant, and professional website.
+
+👉 [View the demo](https://rockem.github.io/astro-photography-portfolio/)
+
+## ✨ Features
+
+- Lightning-fast performance with Astro
+- Fully responsive design
+- Optimized image loading and handling
+- Easy to customize
+- Easy to organized gallery via a yaml file
+- Multiple albums support
+- Image zoom capabilities
+- Automatic deployment to GitHub pages
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Check [AstroJS](https://docs.astro.build/en/install-and-setup/) documentation for prerequisites
+- Basic knowledge of Astro and web development
+
+### Installation
+
+1. click "Use this template" on GitHub
+2. Clone your newly created template
+3. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+3. Start the development server:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run dev
+# or
+yarn dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 📝 Make it your own
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Configuration
 
-Any static assets, like images, can be placed in the `public/` directory.
+Edit the `astro.config.ts` file to update your github pages details:
 
-## 🧞 Commands
+```typescript
+export default defineConfig({
+  site: '<github pages domain>',
+  base: '<repository name>',
+  // ...
+};
+```
 
-All commands are run from the root of the project, from a terminal:
+Edit the `site.config.mts` file to update your personal information:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```typescript
+export default {
+  title: 'SR',
+  favicon: 'favicon.ico',
+  owner: 'Sara Richard',
+  // ... Other configurations
+};
+```
 
-## 👀 Want to learn more?
+### Customize site icon
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Replace `public/favicon.ico` with your icon and change the configuration
+if your file has a different name/location.
+
+### Customize the About page
+
+- Replace the profile image (see [site.config.mts](site.config.mts) for configuration)
+- Edit content in [about page](./src/pages/about.astro)
+
+### Adding Your Photos
+
+1. Place your images in the `src/gallery/<album>` directory
+2. Update the gallery details in `src/gallery/gallery.yaml`
+3. Images are automatically optimized during build
+
+## 🛠️ Built With
+
+- [Astro](https://astro.build) - The web framework for content-driven websites
+- [TypeScript](https://www.typescriptlang.org/) - For type safety
+- [TailwindCSS](https://tailwindcss.com) - For styling
+- [Sharp](https://sharp.pixelplumbing.com/) - For image optimization
+- [GLightbox](https://biati-digital.github.io/glightbox/) - Responsive lightbox gallery
+
+## ⚙️ Provided GitHub actions
+
+- [Build & Test](./.github/workflows/test.yml) - Ensure build integrity
+- [Quality](./.github/workflows/quality.yml) - Run pre-commit checks
+- [Deploy Astroe Site](./.github/workflows/deploy.yml) - Publish to GitHub pages
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request or an Issue.
+
+## 💖 Support
+
+If you find this template useful, please consider giving it a ⭐️ on GitHub!
+
+## 📧 Contact
+
+- [Instagram](https://www.instagram.com/lesegal/)
+- [GitHub](https://github.com/rockem)
