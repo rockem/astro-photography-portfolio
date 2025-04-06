@@ -13,15 +13,17 @@
 		"@tailwindcss/vite": "^4.0.14",
 		"astro": "^5.5.2",
 		"glightbox": "^3.3.1",
+		"js-yaml": "^4.1.0",
 		"justified-layout": "^4.1.0",
 		"lucide-astro": "^0.479.0",
 		"tailwindcss": "^4.0.14"
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.16",
+		"@types/js-yaml": "^4.0.9",
 		"@types/justified-layout": "^4.1.4",
+		"@types/node": "^22.14.0",
 		"prettier": "3.5.3",
-		"prettier-plugin-astro": "^0.14.1",
-		"vite-plugin-static-copy": "^2.3.0"
+		"prettier-plugin-astro": "^0.14.1"
 	}
 }
