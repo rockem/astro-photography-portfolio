@@ -3,7 +3,8 @@ name: Quality checks
 on:
   pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   pre-commit:
