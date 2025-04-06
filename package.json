@@ -9,16 +9,14 @@
 		"astro": "astro",
 		"prettier": "prettier . --write"
 	},
-	"dependencies": {
+	"devDependencies": {
 		"@tailwindcss/vite": "^4.0.14",
 		"astro": "^5.5.2",
 		"glightbox": "^3.3.1",
 		"js-yaml": "^4.1.0",
 		"justified-layout": "^4.1.0",
 		"lucide-astro": "^0.479.0",
-		"tailwindcss": "^4.0.14"
-	},
-	"devDependencies": {
+		"tailwindcss": "^4.0.14",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/js-yaml": "^4.0.9",
 		"@types/justified-layout": "^4.1.4",
