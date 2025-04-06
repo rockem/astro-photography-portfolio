@@ -25,10 +25,8 @@ Ideal for photographers who want to showcase their work through a sleek, perform
 
 ### Installation
 
-1. Choose "Use this template option"
-
+1. click "Use this template" on GitHub
 2. Clone your newly created template
-
 3. Install dependencies:
 
 ```bash
@@ -70,10 +68,20 @@ export default {
 };
 ```
 
+### Customize site icon
+
+Replace `public/favicon.ico` with your icon and change the configuration
+if your file has a different name/location.
+
+### Customize the About page
+
+- Replace the profile image (see [site.config.mts](site.config.mts) for configuration)
+- Edit content in [about page](./src/pages/about.astro)
+
 ### Adding Your Photos
 
 1. Place your images in the `src/gallery/<album>` directory
-2. Update the gallery data in `src/gallery/gallery.yaml`
+2. Update the gallery details in `src/gallery/gallery.yaml`
 3. Images are automatically optimized during build
 
 ## 🛠️ Built With
@@ -82,13 +90,13 @@ export default {
 - [TypeScript](https://www.typescriptlang.org/) - For type safety
 - [TailwindCSS](https://tailwindcss.com) - For styling
 - [Sharp](https://sharp.pixelplumbing.com/) - For image optimization
-- [GLightbox](https://biati-digital.github.io/glightbox/) - For image lightbox
+- [GLightbox](https://biati-digital.github.io/glightbox/) - Responsive lightbox gallery
 
-## Provided GitHub actions
+## ⚙️ Provided GitHub actions
 
-- [Build & Test](./.github/workflows/test.yml) - Verify build & run tests
-- [Quality](./.github/workflows/quality.yml) - Run various pre-commit checks
-- [Deploy Astroe Site](./.github/workflows/deploy.yml) - Deploy site to GitHub pages
+- [Build & Test](./.github/workflows/test.yml) - Ensure build integrity
+- [Quality](./.github/workflows/quality.yml) - Run pre-commit checks
+- [Deploy Astroe Site](./.github/workflows/deploy.yml) - Publish to GitHub pages
 
 ## 📄 License
 
