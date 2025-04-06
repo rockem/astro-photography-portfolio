@@ -2,6 +2,7 @@
 
 A modern, fast, and customizable photography portfolio template built with [Astro](https://astro.build).
 Perfect for photographers looking to showcase their work with a professional and performant website.
+Check out the [demo](https://rockem.github.io/astro-photography-portfolio/).
 
 ## ✨ Features
 
@@ -10,7 +11,9 @@ Perfect for photographers looking to showcase their work with a professional and
 - Optimized image loading and handling
 - Easy to customize
 - Easy to organized gallery via a yaml file
+- Multiple albums support
 - Image zoom capabilities
+- Automatic deployment to GitHub pages
 
 ## 🚀 Getting Started
 
@@ -19,18 +22,13 @@ Perfect for photographers looking to showcase their work with a professional and
 - Check [AstroJS](https://docs.astro.build/en/install-and-setup/) documentation for prerequisites
 - Basic knowledge of Astro and web development
 
-### Quick start
+### Installation
 
-1. Click ""
+1. Choose "Use this template option"
 
-1. Clone this template:
+2. Clone your newly created template
 
-```bash
-git clone https://github.com/yourusername/astro-photography-portfolio
-cd astro-photography-portfolio
-```
-
-2. Install dependencies:
+3. Install dependencies:
 
 ```bash
 npm install
@@ -50,43 +48,32 @@ yarn dev
 
 ### Configuration
 
-Edit the `src/config.ts` file to update your personal information:
+Edit the `astro.config.ts` file to update your github pages details:
 
 ```typescript
-export const SITE_CONFIG = {
-  author: 'Your Name',
-  title: 'Photography Portfolio',
-  description: 'A showcase of my photography work',
-  // ... other configurations
+export default defineConfig({
+  site: '<github pages domain>',
+  base: '<repository name>',
+  // ...
+};
+```
+
+Edit the `site.config.mts` file to update your personal information:
+
+```typescript
+export default {
+  title: 'SR',
+  favicon: 'favicon.ico',
+  owner: 'Sara Richard',
+  // ... Other configurations
 };
 ```
 
 ### Adding Your Photos
 
-1. Place your images in the `public/images` directory
-2. Update the gallery data in `src/data/gallery.ts`
+1. Place your images in the `src/gallery/<album>` directory
+2. Update the gallery data in `src/gallery/gallery.yaml`
 3. Images are automatically optimized during build
-
-### Modifying Styles
-
-- Global styles are in `src/styles/global.css`
-- Component styles are co-located with their components
-- Theme customization in `src/styles/theme.css`
-
-## 📦 Project Structure
-
-```
-/
-├── public/
-│ └── images/
-├── src/
-│ ├── components/
-│ ├── layouts/
-│ ├── pages/
-│ ├── styles/
-│ └── data/
-└── package.json
-```
 
 ## 🛠️ Built With
 
@@ -96,19 +83,19 @@ export const SITE_CONFIG = {
 - [Sharp](https://sharp.pixelplumbing.com/) - For image optimization
 - [GLightbox](https://biati-digital.github.io/glightbox/) - For image lightbox
 
+## Provided GitHub actions
+
+- [Build & Test](./.github/workflows/test.yml) - Verify build & run tests
+- [Quality](./.github/workflows/quality.yml) - Run various pre-commit checks
+- [Deploy Astroe Site](./.github/workflows/deploy.yml) - Deploy site to GitHub pages
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request or an Issue.
 
 ## 💖 Support
 
@@ -116,6 +103,5 @@ If you find this template useful, please consider giving it a ⭐️ on GitHub!
 
 ## 📧 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-
-Project Link: [https://github.com/yourusername/astro-photography-portfolio](https://github.com/yourusername/astro-photography-portfolio)
+- [Instagram](https://www.instagram.com/lesegal/)
+- [GitHub](https://github.com/rockem)
