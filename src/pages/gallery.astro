@@ -1,0 +1,41 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import { allImages } from '../data/imageStore';
+
+const categories: string[] = ['All', 'Nature', 'Travel', 'Street'];
+const search = Astro.url.searchParams.get('album') || '';
+---
+
+<MainLayout>
+	<section class="py-16 pt-24">
+		<div class="container-custom">
+			<div class="mb-16 text-center">
+				<h1 class="text-4xl md:text-5xl font-bold mb-4">Gallery</h1>
+				<p class="text-gray-600 max-w-xl mx-auto">
+					Explore my collection of photographic works
+				</p>
+			</div>
+
+			<div class="flex justify-center mb-10">
+				<div class="flex flex-wrap gap-2 justify-center">
+					{
+						categories.map((category) => (
+							<button
+								class={`px-4 py-2 border ${
+									category === 'All'
+										? 'border-black bg-black text-white'
+										: 'border-gray-200 text-gray-700 hover:border-gray-300'
+								} transition-all`}
+							>
+								{category}
+							</button>
+						))
+					}
+				</div>
+			</div>
+
+			<PhotoGrid images={allImages} />
+		</div>
+	</section>
+</MainLayout>

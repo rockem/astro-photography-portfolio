@@ -1,0 +1,10 @@
+images:
+  - path: kuku/kuku-trees.jpg
+    alt: Kuku Trees
+    description: Beautiful trees in the kuku album
+    category: kuku
+
+  - path: popo/popo-view.jpg
+    alt: Popo View
+    description: Amazing view from the popo album
+    category: popo
