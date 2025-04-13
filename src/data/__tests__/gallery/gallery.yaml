@@ -1,10 +1,16 @@
-images:
-  - path: kuku/kuku-trees.jpg
-    alt: Kuku Trees
-    description: Beautiful trees in the kuku album
-    category: kuku
+collections:
+  - name: kuku
+    images:
+      - path: kuku/kuku-trees.jpg
+        alt: Kuku Trees
+        description: Beautiful trees in the kuku album
 
-  - path: popo/popo-view.jpg
-    alt: Popo View
-    description: Amazing view from the popo album
-    category: popo
+  - name: popo
+    images:
+      - path: popo/popo-view.jpg
+        alt: Popo View
+        description: Amazing view from the popo album
+
+      - path: popo/unknown.jpg
+        alt: Unknown image
+        description: bla bla

@@ -5,7 +5,7 @@ import popoView from './gallery/popo/popo-view.jpg';
 describe('Images Store', () => {
 	beforeEach(() => {});
 
-	test('should update relative path for each image', async () => {
+	test('should retrieve all present images', async () => {
 		const { allImages } = await import('../imageStore.ts');
 
 		const imagesData = await allImages('src/data/__tests__/gallery');

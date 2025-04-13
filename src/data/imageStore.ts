@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import * as yaml from 'js-yaml';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import type { ImageMetadata } from 'astro';
 
 /**
@@ -11,14 +10,18 @@ export interface GalleryImage {
 	path: string;
 	alt: string;
 	description: string;
-	category: string;
+}
+
+export interface Collection {
+	name: string;
+	images: GalleryImage[];
 }
 
 /**
  * Structure of the gallery YAML file
  */
 export interface GalleryData {
-	images: GalleryImage[];
+	collections: Collection[];
 }
 
 /**
@@ -28,7 +31,6 @@ export interface Image {
 	src: ImageMetadata;
 	alt: string;
 	description: string;
-	category: string;
 }
 
 /**
@@ -69,7 +71,14 @@ export const allImages = async (
 		// const resolvedPath = resolveGalleryPath(galleryPath);
 		const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
 		const galleryData = await loadGalleryData(yamlPath);
-		return processImages(galleryData, galleryPath);
+		const images = galleryData.collections.reduce<GalleryImage[]>(
+			(acc, collectionEntry) => {
+				acc.push(...collectionEntry.images);
+				return acc;
+			},
+			[],
+		);
+		return processImages(images, galleryPath);
 	} catch (error) {
 		throw new ImageError(
 			`Failed to load images from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -102,22 +111,30 @@ const loadGalleryData = async (yamlPath: string): Promise<GalleryData> => {
  * @throws {ImageError} If an image module cannot be found
  */
 const processImages = (
-	galleryData: GalleryData,
+	images: GalleryImage[],
 	galleryPath: string,
 ): Image[] => {
-	return galleryData.images.map((img) => {
-		const imagePath = path.join('/', galleryPath, img.path);
-		const imageModule = imageModules[imagePath] as ImageModule | undefined;
-
-		if (!imageModule) {
-			throw new ImageError(`Image not found: ${imagePath}`);
+	return images.reduce<Image[]>((acc, imageEntry) => {
+		const imagePath = path.join('/', galleryPath, imageEntry.path);
+		try {
+			acc.push(createImageDataFor(imagePath, imageEntry));
+		} catch (error: any) {
+			console.warn(error.message);
 		}
-
-		return {
-			src: imageModule.default,
-			alt: img.alt,
-			description: img.description,
-			category: img.category,
-		};
-	});
+		return acc;
+	}, []);
 };
+
+function createImageDataFor(imagePath: string, img: GalleryImage) {
+	const imageModule = imageModules[imagePath] as ImageModule | undefined;
+
+	if (!imageModule) {
+		throw new ImageError(`Image not found: ${imagePath}`);
+	}
+
+	return {
+		src: imageModule.default,
+		alt: img.alt,
+		description: img.description,
+	};
+}
