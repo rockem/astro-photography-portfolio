@@ -3,10 +3,10 @@ import MainLayout from '../layouts/MainLayout.astro';
 import siteConfig from '../../site.config.mjs';
 import { ChevronDown } from 'lucide-astro';
 import PhotoGrid from '../components/PhotoGrid.astro';
-import { allImages } from '../data/imageStore';
+import { allImages, featuredImages } from '../data/imageStore';
 
 const owner = siteConfig.owner;
-const images = await allImages();
+const images = await featuredImages();
 ---
 
 <MainLayout>

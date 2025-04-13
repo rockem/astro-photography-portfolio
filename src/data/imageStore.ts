@@ -10,6 +10,7 @@ export interface GalleryImage {
 	path: string;
 	alt: string;
 	description: string;
+	featured: boolean;
 }
 
 export interface Collection {
@@ -31,6 +32,7 @@ export interface Image {
 	src: ImageMetadata;
 	alt: string;
 	description: string;
+	featured: boolean;
 }
 
 /**
@@ -119,13 +121,13 @@ const processImages = (
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
 		} catch (error: any) {
-			console.warn(error.message);
+			console.warn(`[WARN] ${error.message}`);
 		}
 		return acc;
 	}, []);
 };
 
-function createImageDataFor(imagePath: string, img: GalleryImage) {
+const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 	const imageModule = imageModules[imagePath] as ImageModule | undefined;
 
 	if (!imageModule) {
@@ -136,5 +138,12 @@ function createImageDataFor(imagePath: string, img: GalleryImage) {
 		src: imageModule.default,
 		alt: img.alt,
 		description: img.description,
+		featured: img.featured,
 	};
-}
+};
+
+export const featuredImages = async (
+	galleryPath: string = defaultGalleryPath,
+): Promise<Image[]> => {
+	return (await allImages(galleryPath)).filter((image) => image.featured);
+};

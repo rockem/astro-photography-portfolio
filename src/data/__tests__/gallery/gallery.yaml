@@ -10,6 +10,7 @@ collections:
       - path: popo/popo-view.jpg
         alt: Popo View
         description: Amazing view from the popo album
+        featured: true
 
       - path: popo/unknown.jpg
         alt: Unknown image
