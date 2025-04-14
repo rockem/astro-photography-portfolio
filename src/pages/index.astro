@@ -3,10 +3,10 @@ import MainLayout from '../layouts/MainLayout.astro';
 import siteConfig from '../../site.config.mjs';
 import { ChevronDown } from 'lucide-astro';
 import PhotoGrid from '../components/PhotoGrid.astro';
-import { allImages, featuredImages } from '../data/imageStore';
+import { getImages, featuredImages } from '../data/imageStore';
 
 const owner = siteConfig.owner;
-const images = await featuredImages();
+const images = await getImages({ featured: true });
 ---
 
 <MainLayout>
@@ -50,7 +50,7 @@ const images = await featuredImages();
 			</p>
 		</div>
 		<div class="p-4">
-			<PhotoGrid images={images} />
+			<PhotoGrid images={getImages} />
 		</div>
 	</section>
 </MainLayout>
