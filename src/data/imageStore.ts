@@ -188,9 +188,11 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
  * @param {any} filterBy - Filter criteria object
  * @returns {GalleryImage[]} Filtered array of images
  */
-function filterImages(images: GalleryImage[], filterBy: any) {
+const filterImages = (images: GalleryImage[], filterBy: any) => {
 	return images.filter((image) => {
 		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
 		return key ? image[key] === filterBy[key] : true;
 	});
-}
+};
+
+export const getCollections = (galleryPath: string): string[] => {};

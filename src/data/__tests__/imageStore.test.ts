@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import kukuTrees from './gallery/kuku/kuku-trees.jpg';
 import popoView from './gallery/popo/popo-view.jpg';
+import { getCollections } from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
@@ -28,5 +29,12 @@ describe('Images Store', () => {
 		);
 		expect(images).toHaveLength(1);
 		expect(images[0].description).toContain('popo album');
+	});
+
+	test('should retrieve all collection names', async () => {
+		const collections = await getCollections('src/data/__tests__/gallery');
+		expect(collections).toHaveLength(2);
+		expect(collections[0]).toEqual('kuku');
+		expect(collections[1]).toEqual('popo');
 	});
 });
