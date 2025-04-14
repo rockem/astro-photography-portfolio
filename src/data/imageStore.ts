@@ -60,6 +60,27 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 const defaultGalleryPath = 'src/gallery';
 
 const galleryYaml = 'gallery.yaml';
+
+async function getAllImagesFrom(galleryPath: string) {
+	const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
+	const galleryData = await loadGalleryData(yamlPath);
+	const images = galleryData.collections.reduce<GalleryImage[]>(
+		(acc, collectionEntry) => {
+			acc.push(...collectionEntry.images);
+			return acc;
+		},
+		[],
+	);
+	return images;
+}
+
+function filterImages(images: GalleryImage[], filterBy: any) {
+	return images.filter((image) => {
+		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
+		return key ? image[key] === filterBy[key] : true;
+	});
+}
+
 /**
  * Loads and processes images from the gallery
  * @param galleryPath - Path to the gallery directory
@@ -68,19 +89,11 @@ const galleryYaml = 'gallery.yaml';
  */
 export const allImages = async (
 	galleryPath: string = defaultGalleryPath,
+	filterBy: any = {},
 ): Promise<Image[]> => {
 	try {
-		// const resolvedPath = resolveGalleryPath(galleryPath);
-		const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
-		const galleryData = await loadGalleryData(yamlPath);
-		const images = galleryData.collections.reduce<GalleryImage[]>(
-			(acc, collectionEntry) => {
-				acc.push(...collectionEntry.images);
-				return acc;
-			},
-			[],
-		);
-		return processImages(images, galleryPath);
+		const images = await getAllImagesFrom(galleryPath);
+		return processImages(filterImages(images, filterBy), galleryPath);
 	} catch (error) {
 		throw new ImageError(
 			`Failed to load images from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,

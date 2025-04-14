@@ -14,7 +14,9 @@ describe('Images Store', () => {
 	});
 
 	test('should retrieve only featured images', async () => {
-		const images = await featuredImages('src/data/__tests__/gallery');
+		const images = await allImages('src/data/__tests__/gallery', {
+			featured: true,
+		});
 		expect(images).toHaveLength(1);
 		expect(images[0].alt).toEqual('Popo View');
 	});
