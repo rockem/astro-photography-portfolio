@@ -7,21 +7,23 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"prettier": "prettier . --write"
+		"prettier": "prettier . --write",
+		"test": "vitest"
 	},
 	"devDependencies": {
+		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.0.14",
+		"@types/js-yaml": "^4.0.9",
+		"@types/justified-layout": "^4.1.4",
+		"@types/node": "^22.14.0",
 		"astro": "^5.5.2",
 		"glightbox": "^3.3.1",
 		"js-yaml": "^4.1.0",
 		"justified-layout": "^4.1.0",
 		"lucide-astro": "^0.479.0",
-		"tailwindcss": "^4.0.14",
-		"@tailwindcss/typography": "^0.5.16",
-		"@types/js-yaml": "^4.0.9",
-		"@types/justified-layout": "^4.1.4",
-		"@types/node": "^22.14.0",
 		"prettier": "3.5.3",
-		"prettier-plugin-astro": "^0.14.1"
+		"prettier-plugin-astro": "^0.14.1",
+		"tailwindcss": "^4.0.14",
+		"vitest": "^3.1.1"
 	}
 }

@@ -6,7 +6,8 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"strict": true
+		"strict": true,
+		"types": ["astro/client"]
 	},
 	"extends": "astro/tsconfigs/strict",
 	"include": [".astro/types.d.ts", "src/**/*"],
