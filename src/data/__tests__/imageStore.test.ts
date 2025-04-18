@@ -5,6 +5,8 @@ import { getCollections } from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
+const testGalleryPath = 'src/data/__tests__/gallery';
+
 describe('Images Store', () => {
 	test('should retrieve all present images', async () => {
 		const imagesData = await getTestImages();
@@ -14,7 +16,7 @@ describe('Images Store', () => {
 	});
 
 	async function getTestImages(filter: any = {}) {
-		return await getImages(filter, 'src/data/__tests__/collections');
+		return await getImages(filter, testGalleryPath);
 	}
 
 	test('should retrieve only featured images', async () => {
@@ -30,7 +32,7 @@ describe('Images Store', () => {
 	});
 
 	test('should retrieve all collection names', async () => {
-		const collections = await getCollections('src/data/__tests__/collections');
+		const collections = await getCollections(testGalleryPath);
 		expect(collections).toHaveLength(2);
 		expect(collections[0].id).toEqual('kuku');
 		expect(collections[0].name).toEqual('Kuku');
