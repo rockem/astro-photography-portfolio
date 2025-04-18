@@ -3,10 +3,11 @@ import MainLayout from '../layouts/MainLayout.astro';
 import siteConfig from '../../site.config.mjs';
 import { ChevronDown } from 'lucide-astro';
 import PhotoGrid from '../components/PhotoGrid.astro';
-import { getImages, featuredImages } from '../data/imageStore';
+import { getImages } from '../data/imageStore';
 
 const owner = siteConfig.owner;
 const images = await getImages({ featured: true });
+const base = import.meta.env.BASE_URL;
 ---
 
 <MainLayout>
@@ -21,7 +22,7 @@ const images = await getImages({ featured: true });
 				A place to showcase my photography
 			</p>
 			<a
-				href="/gallery"
+				href=`${base}/collections`
 				class="mt-8 inline-block px-6 py-3 border-2 border-black rounded-md
                       hover:bg-black hover:text-white transition-all duration-300
                       text-sm md:text-base font-medium
@@ -50,7 +51,7 @@ const images = await getImages({ featured: true });
 			</p>
 		</div>
 		<div class="p-4">
-			<PhotoGrid images={getImages} />
+			<PhotoGrid images={images} />
 		</div>
 	</section>
 </MainLayout>

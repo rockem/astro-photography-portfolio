@@ -14,7 +14,7 @@ describe('Images Store', () => {
 	});
 
 	async function getTestImages(filter: any = {}) {
-		return await getImages(filter, 'src/data/__tests__/gallery');
+		return await getImages(filter, 'src/data/__tests__/collections');
 	}
 
 	test('should retrieve only featured images', async () => {
@@ -24,15 +24,17 @@ describe('Images Store', () => {
 	});
 
 	test('should retrieve images of specific collection', async () => {
-		const images = await getTestImages({ collection: 'popo' });
+		const images = await getTestImages({ collections: ['popo'] });
 		expect(images).toHaveLength(1);
 		expect(images[0].description).toContain('popo album');
 	});
 
 	test('should retrieve all collection names', async () => {
-		const collections = await getCollections('src/data/__tests__/gallery');
+		const collections = await getCollections('src/data/__tests__/collections');
 		expect(collections).toHaveLength(2);
-		expect(collections[0]).toEqual('kuku');
-		expect(collections[1]).toEqual('popo');
+		expect(collections[0].id).toEqual('kuku');
+		expect(collections[0].name).toEqual('Kuku');
+		expect(collections[1].id).toEqual('popo');
+		expect(collections[1].name).toEqual('Popo');
 	});
 });

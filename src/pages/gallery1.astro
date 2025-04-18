@@ -1,9 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import PhotoGrid from '../components/PhotoGrid.astro';
-import { getImages } from '../data/imageStore';
+import { getCollections, getImages } from '../data/imageStore';
 
-const categories: string[] = ['All', 'Nature', 'Travel', 'Street'];
+const collections: string[] = ['All', ...(await getCollections())];
 const search = Astro.url.searchParams.get('album') || '';
 ---
 
@@ -20,7 +20,7 @@ const search = Astro.url.searchParams.get('album') || '';
 			<div class="flex justify-center mb-10">
 				<div class="flex flex-wrap gap-2 justify-center">
 					{
-						categories.map((category) => (
+						collections.map((category) => (
 							<button
 								class={`px-4 py-2 border ${
 									category === 'All'
@@ -35,7 +35,7 @@ const search = Astro.url.searchParams.get('album') || '';
 				</div>
 			</div>
 
-			<PhotoGrid images={getImages} />
+			<PhotoGrid images={await getImages({})} />
 		</div>
 	</section>
 </MainLayout>

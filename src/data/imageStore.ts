@@ -4,11 +4,12 @@ import path from 'path';
 import type { ImageMetadata } from 'astro';
 
 /**
- * Structure of the gallery YAML file
+ * Structure of the collections YAML file
  * @property {Collection[]} collections - Array of collections
  */
 export interface GalleryData {
 	collections: Collection[];
+	images: GalleryImage[];
 }
 
 /**
@@ -17,16 +18,16 @@ export interface GalleryData {
  * @property {GalleryImage[]} getImages - Array of images in the collection
  */
 export interface Collection {
+	id: string;
 	name: string;
-	images: GalleryImage[];
 }
 
 /**
- * Represents an image entry in the gallery YAML file
+ * Represents an image entry in the collections YAML file
  * @property {string} path - Relative path to the image file
  * @property {string} alt - Alt text for accessibility and title
  * @property {string} description - Detailed description of the image
- * @property {boolean} featured - Whether the image should in featured gallery
+ * @property {boolean} featured - Whether the image should in featured collections
  * @property {string} collection - Name of the collection this image belongs to
  */
 export interface GalleryImage {
@@ -34,7 +35,7 @@ export interface GalleryImage {
 	alt: string;
 	description: string;
 	featured: boolean;
-	collection: string;
+	collections: string[];
 }
 
 /**
@@ -78,11 +79,11 @@ const defaultGalleryPath = 'src/gallery';
 const galleryYaml = 'gallery.yaml';
 
 /**
- * Loads and processes images from the gallery
- * @param {string} [galleryPath=defaultGalleryPath] - Path to the gallery directory
+ * Loads and processes images from the collections
+ * @param {string} [galleryPath=defaultGalleryPath] - Path to the collections directory
  * @param {any} [filterBy={}] - Filter criteria for images
  * @returns {Promise<Image[]>} Array of processed images
- * @throws {ImageError} If gallery.yaml cannot be read or an image is not found
+ * @throws {ImageError} If collections.yaml cannot be read or an image is not found
  */
 export const getImages = async (
 	filterBy: any = {},
@@ -99,49 +100,37 @@ export const getImages = async (
 };
 
 /**
- * Retrieves all images from the specified gallery path
- * @param {string} galleryPath - Path to the gallery directory
- * @returns {Promise<GalleryImage[]>} Array of gallery images with collection information
+ * Retrieves all images from the specified collections path
+ * @param {string} galleryPath - Path to the collections directory
+ * @returns {Promise<GalleryImage[]>} Array of collections images with collection information
  */
 async function getAllImagesFrom(galleryPath: string) {
-	const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
-	const galleryData = await loadGalleryData(yamlPath);
-	const images = galleryData.collections.reduce<GalleryImage[]>(
-		(acc, collectionEntry) => {
-			acc.push(
-				...collectionEntry.images.map((imageEntry) => {
-					imageEntry.collection = collectionEntry.name;
-					return imageEntry;
-				}),
-			);
-			return acc;
-		},
-		[],
-	);
-	return images;
+	const galleryData = await loadGalleryData(galleryPath);
+	return galleryData.images;
 }
 
 /**
- * Loads gallery data from YAML file
- * @param {string} yamlPath - Path to the gallery.yaml file
- * @returns {Promise<GalleryData>} Parsed gallery data
+ * Loads collections data from YAML file
+ * @param {string} yamlPath - Path to the collections.yaml file
+ * @returns {Promise<GalleryData>} Parsed collections data
  * @throws {ImageError} If YAML file cannot be read or parsed
  */
-const loadGalleryData = async (yamlPath: string): Promise<GalleryData> => {
+const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
+		const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
 		const content = await fs.readFile(yamlPath, 'utf8');
 		return yaml.load(content) as GalleryData;
 	} catch (error) {
 		throw new ImageError(
-			`Failed to load gallery data from ${yamlPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+			`Failed to load gallery data from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
 		);
 	}
 };
 
 /**
- * Processes gallery images and returns array of Image objects
- * @param {GalleryImage[]} images - Array of gallery images to process
- * @param {string} galleryPath - Path to the gallery directory
+ * Processes collections images and returns array of Image objects
+ * @param {GalleryImage[]} images - Array of collections images to process
+ * @param {string} galleryPath - Path to the collections directory
  * @returns {Image[]} Array of processed images with metadata
  * @throws {ImageError} If an image module cannot be found
  */
@@ -191,8 +180,20 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 const filterImages = (images: GalleryImage[], filterBy: any) => {
 	return images.filter((image) => {
 		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
-		return key ? image[key] === filterBy[key] : true;
+		if (key) {
+			if (Array.isArray(image[key])) {
+				return image[key].every((v) => filterBy[key].includes(v));
+			} else {
+				return image[key] === filterBy[key];
+			}
+		}
+		return true;
 	});
 };
 
-export const getCollections = (galleryPath: string): string[] => {};
+export const getCollections = async (
+	galleryPath: string = defaultGalleryPath,
+): Promise<Collection[]> => {
+	const galleryData = await loadGalleryData(galleryPath);
+	return galleryData.collections;
+};
