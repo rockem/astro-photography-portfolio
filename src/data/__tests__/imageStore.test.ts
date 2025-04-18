@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import kukuTrees from './gallery/kuku/kuku-trees.jpg';
 import popoView from './gallery/popo/popo-view.jpg';
-import { getCollections } from '../imageStore.ts';
+import { getCollections, ImageStoreError } from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
@@ -15,8 +15,11 @@ describe('Images Store', () => {
 		expect(imagesData[1].src).toEqual(popoView);
 	});
 
-	async function getTestImages(filter: any = {}) {
-		return await getImages(filter, testGalleryPath);
+	async function getTestImages(
+		filter: any = {},
+		galleryPath: string = testGalleryPath,
+	) {
+		return await getImages(filter, galleryPath);
 	}
 
 	test('should retrieve only featured images', async () => {
@@ -38,5 +41,19 @@ describe('Images Store', () => {
 		expect(collections[0].name).toEqual('Kuku');
 		expect(collections[1].id).toEqual('popo');
 		expect(collections[1].name).toEqual('Popo');
+	});
+
+	test('should fail on a missing gallery file', async () => {
+		const invalidPath = 'src/data/__tests__/gallery/non-existing-gallery.yaml';
+		await expect(getTestImages({}, invalidPath)).rejects.toThrow(
+			ImageStoreError,
+		);
+	});
+
+	test('should fail on invalid gallery file', async () => {
+		const galleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
+		await expect(getTestImages({}, galleryPath)).rejects.toThrow(
+			ImageStoreError,
+		);
 	});
 });

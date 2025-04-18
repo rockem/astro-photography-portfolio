@@ -61,7 +61,7 @@ type ImageModule = { default: ImageMetadata };
 /**
  * Error class for image-related errors
  */
-export class ImageError extends Error {
+export class ImageStoreError extends Error {
 	constructor(message: string) {
 		super(message);
 		this.name = 'ImageError';
@@ -83,7 +83,7 @@ const galleryYaml = 'gallery.yaml';
  * @param {string} [galleryPath=defaultGalleryPath] - Path to the collections directory
  * @param {any} [filterBy={}] - Filter criteria for images
  * @returns {Promise<Image[]>} Array of processed images
- * @throws {ImageError} If collections.yaml cannot be read or an image is not found
+ * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
 export const getImages = async (
 	filterBy: any = {},
@@ -93,7 +93,7 @@ export const getImages = async (
 		const images = await getAllImagesFrom(galleryPath);
 		return processImages(filterImages(images, filterBy), galleryPath);
 	} catch (error) {
-		throw new ImageError(
+		throw new ImageStoreError(
 			`Failed to load images from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
 		);
 	}
@@ -113,7 +113,7 @@ async function getAllImagesFrom(galleryPath: string) {
  * Loads collections data from YAML file
  * @param {string} yamlPath - Path to the collections.yaml file
  * @returns {Promise<GalleryData>} Parsed collections data
- * @throws {ImageError} If YAML file cannot be read or parsed
+ * @throws {ImageStoreError} If YAML file cannot be read or parsed
  */
 const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
@@ -121,7 +121,7 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 		const content = await fs.readFile(yamlPath, 'utf8');
 		return yaml.load(content) as GalleryData;
 	} catch (error) {
-		throw new ImageError(
+		throw new ImageStoreError(
 			`Failed to load gallery data from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
 		);
 	}
@@ -132,7 +132,7 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
  * @param {GalleryImage[]} images - Array of collections images to process
  * @param {string} galleryPath - Path to the collections directory
  * @returns {Image[]} Array of processed images with metadata
- * @throws {ImageError} If an image module cannot be found
+ * @throws {ImageStoreError} If an image module cannot be found
  */
 const processImages = (
 	images: GalleryImage[],
@@ -154,13 +154,13 @@ const processImages = (
  * @param {string} imagePath - Path to the image file
  * @param {GalleryImage} img - Gallery image entry
  * @returns {Image} Processed image with metadata
- * @throws {ImageError} If image module cannot be found
+ * @throws {ImageStoreError} If image module cannot be found
  */
 const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 	const imageModule = imageModules[imagePath] as ImageModule | undefined;
 
 	if (!imageModule) {
-		throw new ImageError(`Image not found: ${imagePath}`);
+		throw new ImageStoreError(`Image not found: ${imagePath}`);
 	}
 
 	return {
