@@ -8,13 +8,26 @@ import { getImages } from '../data/imageStore';
 const owner = siteConfig.owner;
 const images = await getImages({ featured: true });
 const base = import.meta.env.BASE_URL;
+const coverUrl = `${base}/images/cover-1.jpg`;
 ---
 
 <MainLayout>
 	<section
-		class="landing-section h-screen flex items-center justify-center bg-cover bg-center px-4 py-12 md:py-16"
+		class="landing-section relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-20 md:py-16 overflow-hidden"
 	>
-		<div class="text-center max-w-2xl mx-auto">
+		<div
+			class="absolute top-[60px] bottom-[120px] left-0 right-0 z-0"
+			style={{
+				backgroundImage: 'url(/src/gallery/nature/L1002174.jpg)',
+				backgroundSize: 'cover',
+				backgroundPosition: 'center',
+				backgroundRepeat: 'no-repeat',
+				filter: 'brightness(0.7)',
+				opacity: 0.5,
+			}}
+		>
+		</div>
+		<div class="container-custom text-center mb-12 relative z-10">
 			<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
 				{owner} Photography
 			</h1>
@@ -33,7 +46,7 @@ const base = import.meta.env.BASE_URL;
 		</div>
 		<div class="absolute bottom-10 left-0 right-0 flex justify-center">
 			<button
-				onclick="scrollToContent()"
+				onclick="scrollToContent();"
 				class="flex flex-col items-center text-gray-600 hover:text-gray-900 transition-colors hover:cursor-pointer"
 				aria-label="Scroll down to see featured work"
 			>
@@ -43,7 +56,7 @@ const base = import.meta.env.BASE_URL;
 		</div>
 	</section>
 
-	<section class="py-20">
+	<section class="featured-section py-20">
 		<div class="max-w-2xl mx-auto text-center mb-16">
 			<h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Works</h2>
 			<p class="text-gray-600">
@@ -55,6 +68,24 @@ const base = import.meta.env.BASE_URL;
 		</div>
 	</section>
 </MainLayout>
+
+<style define:vars={{ coverUrl: `url(${base}/images/cover-1.jpg)` }} }>
+	/*.landing-section {
+      background-image: var(--coverUrl);
+    }*/
+
+	/*@media (min-width: 768px) {
+      .landing-section {
+        background-image: url('/images/landing-bg-md.jpg');
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .landing-section {
+        background-image: url('/images/landing-bg-lg.jpg');
+      }
+    }*/
+</style>
 
 <script is:inline>
 	const scrollToContent = () => {
