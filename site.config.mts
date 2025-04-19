@@ -13,7 +13,11 @@ export default {
 	owner: 'Sara Richard',
 	profileImage: 'profile.webp',
 	socialLinks: [
-		{ name: 'GitHub', url: 'https://github.com', icon: Github } as SocialLink,
+		{
+			name: 'GitHub',
+			url: 'https://github.com/rockem/astro-photography-portfolio',
+			icon: Github,
+		} as SocialLink,
 		{
 			name: 'Instagram',
 			url: 'https://www.instagram.com',
