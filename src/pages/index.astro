@@ -1,49 +1,15 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import siteConfig from '../../site.config.mjs';
 import { ChevronDown } from 'lucide-astro';
-import PhotoGrid from '../components/PhotoGrid.astro';
-import { getImages } from '../data/imageStore';
-
-const owner = siteConfig.owner;
-const images = await getImages({ featured: true });
-const base = import.meta.env.BASE_URL;
-const coverUrl = `${base}/images/cover-1.jpg`;
+import LandingHero from '../components/LandingHero-2.astro';
+import FeaturedGallery from '../components/FeaturedGallery.astro';
 ---
 
 <MainLayout>
 	<section
-		class="landing-section relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 py-20 md:py-16 overflow-hidden"
+		class="relative min-h-screen items-center flex py-20 md:py-16 overflow-hidden"
 	>
-		<div
-			class="absolute top-[60px] bottom-[120px] left-0 right-0 z-0"
-			style={{
-				backgroundImage: 'url(/src/gallery/nature/L1002174.jpg)',
-				backgroundSize: 'cover',
-				backgroundPosition: 'center',
-				backgroundRepeat: 'no-repeat',
-				filter: 'brightness(0.7)',
-				opacity: 0.5,
-			}}
-		>
-		</div>
-		<div class="container-custom text-center mb-12 relative z-10">
-			<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-				{owner} Photography
-			</h1>
-			<p class="mt-4 text-base md:text-lg text-gray-700">
-				A place to showcase my photography
-			</p>
-			<a
-				href=`${base}/collections`
-				class="mt-8 inline-block px-6 py-3 border-2 border-black rounded-md
-                      hover:bg-black hover:text-white transition-all duration-300
-                      text-sm md:text-base font-medium
-                      transform hover:scale-105 active:scale-95"
-			>
-				View Gallery
-			</a>
-		</div>
+		<LandingHero />
 		<div class="absolute bottom-10 left-0 right-0 flex justify-center">
 			<button
 				onclick="scrollToContent();"
@@ -56,36 +22,8 @@ const coverUrl = `${base}/images/cover-1.jpg`;
 		</div>
 	</section>
 
-	<section class="featured-section py-20">
-		<div class="max-w-2xl mx-auto text-center mb-16">
-			<h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Works</h2>
-			<p class="text-gray-600">
-				A selection of my best photographs from various adventures
-			</p>
-		</div>
-		<div class="p-4">
-			<PhotoGrid images={images} />
-		</div>
-	</section>
+	<FeaturedGallery />
 </MainLayout>
-
-<style define:vars={{ coverUrl: `url(${base}/images/cover-1.jpg)` }} }>
-	/*.landing-section {
-      background-image: var(--coverUrl);
-    }*/
-
-	/*@media (min-width: 768px) {
-      .landing-section {
-        background-image: url('/images/landing-bg-md.jpg');
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .landing-section {
-        background-image: url('/images/landing-bg-lg.jpg');
-      }
-    }*/
-</style>
 
 <script is:inline>
 	const scrollToContent = () => {
