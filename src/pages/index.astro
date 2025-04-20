@@ -1,8 +1,8 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
-import { ChevronDown } from 'lucide-astro';
 import LandingHero from '../components/LandingHero-2.astro';
 import FeaturedGallery from '../components/FeaturedGallery.astro';
+import FeaturedWorkScroll from '../components/FeaturedWorkScroll.astro';
 ---
 
 <MainLayout>
@@ -10,26 +10,10 @@ import FeaturedGallery from '../components/FeaturedGallery.astro';
 		class="relative min-h-screen items-center flex py-20 md:py-16 overflow-hidden"
 	>
 		<LandingHero />
-		<div class="absolute bottom-10 left-0 right-0 flex justify-center">
-			<button
-				onclick="scrollToContent();"
-				class="flex flex-col items-center text-gray-600 hover:text-gray-900 transition-colors hover:cursor-pointer"
-				aria-label="Scroll down to see featured work"
-			>
-				<span class="text-sm mb-2">Featured Work</span>
-				<ChevronDown size={24} />
-			</button>
-		</div>
+		<FeaturedWorkScroll />
 	</section>
 
-	<FeaturedGallery />
+	<section class="featured-section py-20">
+		<FeaturedGallery />
+	</section>
 </MainLayout>
-
-<script is:inline>
-	const scrollToContent = () => {
-		window.scrollTo({
-			top: window.innerHeight,
-			behavior: 'smooth',
-		});
-	};
-</script>
