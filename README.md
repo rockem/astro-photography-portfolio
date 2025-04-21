@@ -54,7 +54,7 @@ export default defineConfig({
   site: '<github pages domain>',
   base: '<repository name>',
   // ...
-};
+});
 ```
 
 Edit the `site.config.mts` file to update your personal information:
