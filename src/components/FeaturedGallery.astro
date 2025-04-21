@@ -5,14 +5,12 @@ import { getImages } from '../data/imageStore';
 const images = await getImages({ featured: true });
 ---
 
-<section class="featured-section py-20">
-	<div class="max-w-2xl mx-auto text-center mb-16">
-		<h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Works</h2>
-		<p class="text-gray-600">
-			A selection of my best photographs from various adventures
-		</p>
-	</div>
-	<div class="p-4">
-		<PhotoGrid images={images} />
-	</div>
-</section>
+<div class="max-w-2xl mx-auto text-center mb-16">
+	<h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Works</h2>
+	<p class="text-gray-600">
+		A selection of my best photographs from various adventures
+	</p>
+</div>
+<div class="p-4">
+	<PhotoGrid images={images} />
+</div>

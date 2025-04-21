@@ -1,0 +1,40 @@
+---
+import { ChevronDown } from 'lucide-astro';
+---
+
+<div
+	id="featured-gallery-scroll"
+	class="absolute bottom-10 left-0 right-0 flex justify-center transition-opacity duration-300"
+>
+	<button
+		onclick="scrollToContent();"
+		class="flex flex-col items-center text-gray-600 hover:text-gray-900 transition-colors hover:cursor-pointer"
+		aria-label="Scroll down to see featured work"
+	>
+		<span class="text-sm mb-2">Featured Work</span>
+		<ChevronDown size={24} />
+	</button>
+</div>
+
+<script is:inline>
+	const scrollToContent = () => {
+		window.scrollTo({
+			top: window.innerHeight,
+			behavior: 'smooth',
+		});
+	};
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const button = document.getElementById('featured-gallery-scroll');
+
+		window.addEventListener('scroll', () => {
+			if (window.scrollY > 100) {
+				button.style.opacity = 0;
+				button.style.visibility = 'hidden';
+			} else {
+				button.style.visibility = 'visible';
+				button.style.opacity = 1;
+			}
+		});
+	});
+</script>
