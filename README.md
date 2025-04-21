@@ -96,7 +96,7 @@ if your file has a different name/location.
 
 - [Build & Test](./.github/workflows/test.yml) - Ensure build integrity
 - [Quality](./.github/workflows/quality.yml) - Run pre-commit checks
-- [Deploy Astroe Site](./.github/workflows/deploy.yml) - Publish to GitHub pages
+- [Deploy Astro Site](./.github/workflows/deploy.yml) - Publish to GitHub pages
 
 ## 📄 License
 
