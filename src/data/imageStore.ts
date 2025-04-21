@@ -121,8 +121,13 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 function validateGalleryData(gallery: GalleryData) {
 	const collectionIds = gallery.collections.map((elem) => elem.id);
 	for (const image of gallery.images) {
-		if (!image.collections.every((col) => collectionIds.includes(col))) {
-			throw new ImageStoreError(`Invalid collection name for: ${image.path}`);
+		const invalidCollections = image.collections.filter(
+			(col) => !collectionIds.includes(col),
+		);
+		if (invalidCollections.length > 0) {
+			throw new ImageStoreError(
+				`Invalid collection(s) [${invalidCollections.join(', ')}] referenced in image: ${image.path}`,
+			);
 		}
 	}
 }
