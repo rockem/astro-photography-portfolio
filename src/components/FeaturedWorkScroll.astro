@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-astro';
 
 <div
 	id="featured-gallery-scroll"
-	class="absolute bottom-10 left-0 right-0 flex justify-center"
+	class="absolute bottom-10 left-0 right-0 flex justify-center transition-opacity duration-300"
 >
 	<button
 		onclick="scrollToContent();"
@@ -29,9 +29,11 @@ import { ChevronDown } from 'lucide-astro';
 
 		window.addEventListener('scroll', () => {
 			if (window.scrollY > 100) {
+				button.style.opacity = 0;
 				button.style.visibility = 'hidden';
 			} else {
 				button.style.visibility = 'visible';
+				button.style.opacity = 1;
 			}
 		});
 	});
