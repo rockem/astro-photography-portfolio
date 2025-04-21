@@ -75,8 +75,7 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 	eager: true,
 });
 
-const defaultGalleryPath = 'src/gallery';
-const galleryYaml = 'gallery.yaml';
+const defaultGalleryPath = 'src/gallery/gallery.yaml';
 
 /**
  * Loads and processes images from the collections
@@ -90,7 +89,7 @@ export const getImages = async (
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Image[]> => {
 	try {
-		const images = await getAllImagesFrom(galleryPath);
+		const images = await (await loadGalleryData(galleryPath)).images;
 		return processImages(filterImages(images, filterBy), galleryPath);
 	} catch (error) {
 		throw new ImageStoreError(
@@ -100,16 +99,6 @@ export const getImages = async (
 };
 
 /**
- * Retrieves all images from the specified collections path
- * @param {string} galleryPath - Path to the collections directory
- * @returns {Promise<GalleryImage[]>} Array of collections images with collection information
- */
-async function getAllImagesFrom(galleryPath: string) {
-	const galleryData = await loadGalleryData(galleryPath);
-	return galleryData.images;
-}
-
-/**
  * Loads collections data from YAML file
  * @param {string} yamlPath - Path to the collections.yaml file
  * @returns {Promise<GalleryData>} Parsed collections data
@@ -117,15 +106,26 @@ async function getAllImagesFrom(galleryPath: string) {
  */
 const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
-		const yamlPath = path.resolve(process.cwd(), galleryPath, galleryYaml);
+		const yamlPath = path.resolve(process.cwd(), galleryPath);
 		const content = await fs.readFile(yamlPath, 'utf8');
-		return yaml.load(content) as GalleryData;
+		const gallery = yaml.load(content) as GalleryData;
+		validateGalleryData(gallery);
+		return gallery;
 	} catch (error) {
 		throw new ImageStoreError(
 			`Failed to load gallery data from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
 		);
 	}
 };
+
+function validateGalleryData(gallery: GalleryData) {
+	const collectionIds = gallery.collections.map((elem) => elem.id);
+	for (const image of gallery.images) {
+		if (!image.collections.every((col) => collectionIds.includes(col))) {
+			throw new ImageStoreError(`Invalid collection name for: ${image.path}`);
+		}
+	}
+}
 
 /**
  * Processes collections images and returns array of Image objects
@@ -139,7 +139,11 @@ const processImages = (
 	galleryPath: string,
 ): Image[] => {
 	return images.reduce<Image[]>((acc, imageEntry) => {
-		const imagePath = path.join('/', galleryPath, imageEntry.path);
+		const imagePath = path.join(
+			'/',
+			path.parse(galleryPath).dir,
+			imageEntry.path,
+		);
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
 		} catch (error: any) {

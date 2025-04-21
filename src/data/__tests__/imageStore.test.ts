@@ -5,7 +5,7 @@ import { getCollections, ImageStoreError } from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
-const testGalleryPath = 'src/data/__tests__/gallery';
+const testGalleryPath = 'src/data/__tests__/gallery/gallery.yaml';
 
 describe('Images Store', () => {
 	test('should retrieve all present images', async () => {
@@ -52,6 +52,14 @@ describe('Images Store', () => {
 
 	test('should fail on invalid gallery file', async () => {
 		const galleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
+		await expect(getTestImages({}, galleryPath)).rejects.toThrow(
+			ImageStoreError,
+		);
+	});
+
+	test('should fail on invalid collection', async () => {
+		const galleryPath =
+			'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
 		await expect(getTestImages({}, galleryPath)).rejects.toThrow(
 			ImageStoreError,
 		);
