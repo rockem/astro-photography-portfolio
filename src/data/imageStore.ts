@@ -203,6 +203,5 @@ const filterImages = (images: GalleryImage[], filterBy: any) => {
 export const getCollections = async (
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Collection[]> => {
-	const galleryData = await loadGalleryData(galleryPath);
-	return galleryData.collections;
+	return (await loadGalleryData(galleryPath)).collections;
 };
