@@ -68,6 +68,8 @@ export class ImageStoreError extends Error {
 	}
 }
 
+export type FilterBy = Partial<GalleryImage>;
+
 /**
  * Import all images from /src directory
  */
@@ -85,7 +87,7 @@ const defaultGalleryPath = 'src/gallery/gallery.yaml';
  * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
 export const getImages = async (
-	filterBy: any = {},
+	filterBy: FilterBy,
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Image[]> => {
 	try {
@@ -93,10 +95,14 @@ export const getImages = async (
 		return processImages(filterImages(images, filterBy), galleryPath);
 	} catch (error) {
 		throw new ImageStoreError(
-			`Failed to load images from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+			`Failed to load images from ${galleryPath}: ${getErrorMsgFrom(error)}`,
 		);
 	}
 };
+
+function getErrorMsgFrom(error: unknown) {
+	return error instanceof Error ? error.message : 'Unknown error';
+}
 
 /**
  * Loads collections data from YAML file
@@ -113,7 +119,7 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 		return gallery;
 	} catch (error) {
 		throw new ImageStoreError(
-			`Failed to load gallery data from ${galleryPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+			`Failed to load gallery data from ${galleryPath}: ${getErrorMsgFrom(error)}`,
 		);
 	}
 };
@@ -151,8 +157,8 @@ const processImages = (
 		);
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
-		} catch (error: any) {
-			console.warn(`[WARN] ${error.message}`);
+		} catch (error) {
+			console.warn(`[WARN] ${getErrorMsgFrom(error)}`);
 		}
 		return acc;
 	}, []);
@@ -186,12 +192,16 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
  * @param {any} filterBy - Filter criteria object
  * @returns {GalleryImage[]} Filtered array of images
  */
-const filterImages = (images: GalleryImage[], filterBy: any) => {
+const filterImages = (images: GalleryImage[], filterBy: FilterBy) => {
 	return images.filter((image) => {
 		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
 		if (key) {
 			if (Array.isArray(image[key])) {
-				return image[key].every((v) => filterBy[key].includes(v));
+				return image[key].every((v) =>
+					filterBy[key]
+						? Array.isArray(filterBy[key]) && filterBy[key].includes(v)
+						: false,
+				);
 			} else {
 				return image[key] === filterBy[key];
 			}

@@ -1,7 +1,11 @@
 import { describe, expect, test } from 'vitest';
 import kukuTrees from './gallery/kuku/kuku-trees.jpg';
 import popoView from './gallery/popo/popo-view.jpg';
-import { getCollections, ImageStoreError } from '../imageStore.ts';
+import {
+	type FilterBy,
+	getCollections,
+	ImageStoreError,
+} from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
@@ -16,7 +20,7 @@ describe('Images Store', () => {
 	});
 
 	async function getTestImages(
-		filter: any = {},
+		filter: FilterBy = {},
 		galleryPath: string = testGalleryPath,
 	) {
 		return await getImages(filter, galleryPath);
@@ -64,4 +68,6 @@ describe('Images Store', () => {
 			ImageStoreError,
 		);
 	});
+
+	test('should filter by ');
 });
