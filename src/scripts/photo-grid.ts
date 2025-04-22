@@ -1,6 +1,51 @@
 import justifiedLayout from 'justified-layout';
 import GLightbox from 'glightbox';
 
+interface JustifiedLayoutResult {
+	/**
+	 * Height of the container containing the justified layout.
+	 */
+	containerHeight: number;
+	/**
+	 * Number of items that are in rows that aren't fully-packed.
+	 */
+	widowCount: number;
+	/**
+	 * Computed positional and sizing properties of a box in the justified layout.
+	 */
+	boxes: LayoutBox[];
+}
+
+/**
+ * Computed positional and sizing properties of a box in the layout.
+ */
+interface LayoutBox {
+	/**
+	 * Aspect ratio of the box.
+	 */
+	aspectRatio: number;
+	/**
+	 * Distance between the top side of the box and the top boundary of the justified layout.
+	 */
+	top: number;
+	/**
+	 * Width of the box in a justified layout.
+	 */
+	width: number;
+	/**
+	 * Height of the box in a justified layout.
+	 */
+	height: number;
+	/**
+	 * Distance between the left side of the box and the left boundary of the justified layout.
+	 */
+	left: number;
+	/**
+	 * Whether or not the aspect ratio was forced.
+	 */
+	forcedAspectRatio?: boolean;
+}
+
 export async function setupGallery() {
 	if (typeof document === 'undefined') return;
 
@@ -42,7 +87,7 @@ export async function setupGallery() {
 function createLayoutFor(
 	imageElements: HTMLImageElement[],
 	container: HTMLElement,
-): any {
+): JustifiedLayoutResult {
 	const imageSizes = imageElements.map((img) => ({
 		width: img.naturalWidth || img.width || 300,
 		height: img.naturalHeight || img.height || 200,
@@ -78,7 +123,10 @@ async function waitForImagesToLoad(container: HTMLElement) {
 	return imageElements;
 }
 
-function applyImagesStyleBasedOnLayout(imageLinks: HTMLElement[], layout: any) {
+function applyImagesStyleBasedOnLayout(
+	imageLinks: HTMLElement[],
+	layout: JustifiedLayoutResult,
+) {
 	imageLinks.forEach((el, i) => {
 		if (!layout.boxes[i]) return;
 		const { left, top, width, height } = layout.boxes[i];
@@ -92,7 +140,10 @@ function applyImagesStyleBasedOnLayout(imageLinks: HTMLElement[], layout: any) {
 	});
 }
 
-function applyContainerStyleBasedOnLayout(container: HTMLElement, layout: any) {
+function applyContainerStyleBasedOnLayout(
+	container: HTMLElement,
+	layout: JustifiedLayoutResult,
+) {
 	// Ensure the parent container has relative positioning
 	container.style.position = 'relative';
 	// Set container height
@@ -107,7 +158,10 @@ if (typeof window !== 'undefined') {
 }
 
 // Debounce helper
-function debounce<T extends (...args: any[]) => any>(func: T, wait: number) {
+function debounce<T extends (...args: unknown[]) => unknown>(
+	func: T,
+	wait: number,
+) {
 	let timeout: ReturnType<typeof setTimeout>;
 	return function executedFunction(...args: Parameters<T>) {
 		const later = () => {

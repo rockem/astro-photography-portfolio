@@ -17,3 +17,11 @@ repos:
         language: system
         types: [file]
         files: \.(js|jsx|ts|tsx|json|md|css|scss|html|astro)$
+  - repo: local
+    hooks:
+      - id: eslint
+        name: Run Linter
+        entry: npm run lint
+        language: system
+        types: [file]
+        files: \.(js|ts|astro)$
