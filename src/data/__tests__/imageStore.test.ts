@@ -68,6 +68,4 @@ describe('Images Store', () => {
 			ImageStoreError,
 		);
 	});
-
-	test('should filter by ');
 });
