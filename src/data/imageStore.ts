@@ -1,62 +1,13 @@
 import { promises as fs } from 'fs';
 import * as yaml from 'js-yaml';
 import path from 'path';
-import type { ImageMetadata } from 'astro';
-
-/**
- * Structure of the collections YAML file
- * @property {Collection[]} collections - Array of collections
- */
-export interface GalleryData {
-	collections: Collection[];
-	images: GalleryImage[];
-}
-
-/**
- * Represents a collection of images
- * @property {string} name - Name of the collection
- * @property {GalleryImage[]} getImages - Array of images in the collection
- */
-export interface Collection {
-	id: string;
-	name: string;
-}
-
-/**
- * Represents an image entry in the collections YAML file
- * @property {string} path - Relative path to the image file
- * @property {string} alt - Alt text for accessibility and title
- * @property {string} description - Detailed description of the image
- * @property {boolean} featured - Whether the image should in featured collections
- * @property {string} collection - Name of the collection this image belongs to
- */
-export interface GalleryImage {
-	path: string;
-	alt: string;
-	description: string;
-	featured: boolean;
-	collections: string[];
-}
-
-/**
- * Represents a processed image with metadata
- * @property {ImageMetadata} src - Image source metadata from Astro
- * @property {string} alt - Alt text for accessibility
- * @property {string} description - Detailed description of the image
- * @property {boolean} featured - Whether the image should be featured
- */
-export interface Image {
-	src: ImageMetadata;
-	alt: string;
-	description: string;
-	featured: boolean;
-}
-
-/**
- * Type for the image module import result
- * @property {ImageMetadata} default - Default export containing image metadata
- */
-type ImageModule = { default: ImageMetadata };
+import type {
+	ImageModule,
+	Collection,
+	GalleryData,
+	GalleryImage,
+	Image,
+} from './gallerySchema.ts';
 
 /**
  * Error class for image-related errors
@@ -64,11 +15,9 @@ type ImageModule = { default: ImageMetadata };
 export class ImageStoreError extends Error {
 	constructor(message: string) {
 		super(message);
-		this.name = 'ImageError';
+		this.name = 'ImageStoreError';
 	}
 }
-
-export type FilterBy = Partial<GalleryImage>;
 
 /**
  * Import all images from /src directory
@@ -79,20 +28,21 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 
 const defaultGalleryPath = 'src/gallery/gallery.yaml';
 
+export const featuredCollectionId = 'featured';
+const builtInCollections = [featuredCollectionId];
+
 /**
  * Loads and processes images from the collections
- * @param {string} [galleryPath=defaultGalleryPath] - Path to the collections directory
- * @param {any} [filterBy={}] - Filter criteria for images
+ * @param {string} [galleryPath=defaultGalleryPath] - @param galleryPath - Path to the gallery yaml file
  * @returns {Promise<Image[]>} Array of processed images
  * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
 export const getImages = async (
-	filterBy: FilterBy,
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Image[]> => {
 	try {
 		const images = await (await loadGalleryData(galleryPath)).images;
-		return processImages(filterImages(images, filterBy), galleryPath);
+		return processImages(images, galleryPath);
 	} catch (error) {
 		throw new ImageStoreError(
 			`Failed to load images from ${galleryPath}: ${getErrorMsgFrom(error)}`,
@@ -125,7 +75,9 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 };
 
 function validateGalleryData(gallery: GalleryData) {
-	const collectionIds = gallery.collections.map((elem) => elem.id);
+	const collectionIds = gallery.collections
+		.map((col) => col.id)
+		.concat(builtInCollections);
 	for (const image of gallery.images) {
 		const invalidCollections = image.collections.filter(
 			(col) => !collectionIds.includes(col),
@@ -182,34 +134,29 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 		src: imageModule.default,
 		alt: img.alt,
 		description: img.description,
-		featured: img.featured,
+		collections: img.collections,
 	};
 };
 
 /**
- * Filters images based on the provided criteria
- * @param {GalleryImage[]} images - Array of images to filter
- * @param {any} filterBy - Filter criteria object
- * @returns {GalleryImage[]} Filtered array of images
+ * Retrieves images belonging to a specific collection
+ * @param collection - Collection ID to filter images by
+ * @param galleryPath - Path to the gallery yaml file
+ * @returns {Promise<Image[]>} Array of images in the specified collection
  */
-const filterImages = (images: GalleryImage[], filterBy: FilterBy) => {
-	return images.filter((image) => {
-		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
-		if (key) {
-			if (Array.isArray(image[key])) {
-				return image[key].every((v) =>
-					filterBy[key]
-						? Array.isArray(filterBy[key]) && filterBy[key].includes(v)
-						: false,
-				);
-			} else {
-				return image[key] === filterBy[key];
-			}
-		}
-		return true;
-	});
+export const getImagesByCollection = async (
+	collection: string,
+	galleryPath: string = defaultGalleryPath,
+): Promise<Image[]> => {
+	const images = await getImages(galleryPath);
+	return images.filter((image) => image.collections.includes(collection));
 };
 
+/**
+ * Retrieves all collections from the gallery
+ * @param galleryPath - Path to the gallery yaml file
+ * @returns {Promise<Collection[]>} Array of collections
+ */
 export const getCollections = async (
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Collection[]> => {
