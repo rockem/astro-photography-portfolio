@@ -11,6 +11,9 @@ const { getImages } = await import('../imageStore.ts');
 
 const testGalleryPath = 'src/data/__tests__/gallery/gallery.yaml';
 
+const invalidGalleryPath =
+	'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
+
 describe('Images Store', () => {
 	test('should retrieve all present images', async () => {
 		const imagesData = await getImages(testGalleryPath);
@@ -30,6 +33,11 @@ describe('Images Store', () => {
 		expect(images).toHaveLength(1);
 		expect(images[0].description).toContain('popo album');
 	});
+	test('should fail on getting a collection with invalid gallery yaml', async () => {
+		await expect(
+			getImagesByCollection('kuku', invalidGalleryPath),
+		).rejects.toThrow(ImageStoreError);
+	});
 
 	test('should retrieve all collection names', async () => {
 		const collections = await getCollections(testGalleryPath);
@@ -41,8 +49,9 @@ describe('Images Store', () => {
 	});
 
 	test('should fail on a missing gallery file', async () => {
-		const invalidPath = 'src/data/__tests__/gallery/non-existing-gallery.yaml';
-		await expect(getImages(invalidPath)).rejects.toThrow(ImageStoreError);
+		await expect(getImages(invalidGalleryPath)).rejects.toThrow(
+			ImageStoreError,
+		);
 	});
 
 	test('should fail on invalid gallery file', async () => {
