@@ -80,8 +80,7 @@ const builtInCollections = [featuredCollectionId];
 
 /**
  * Loads and processes images from the collections
- * @param {string} [galleryPath=defaultGalleryPath] - Path to the collections directory
- * @param {any} [filterBy={}] - Filter criteria for images
+ * @param {string} [galleryPath=defaultGalleryPath] - @param galleryPath - Path to the gallery yaml file
  * @returns {Promise<Image[]>} Array of processed images
  * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
@@ -186,14 +185,25 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 	};
 };
 
+/**
+ * Retrieves images belonging to a specific collection
+ * @param collection - Collection ID to filter images by
+ * @param galleryPath - Path to the gallery yaml file
+ * @returns {Promise<Image[]>} Array of images in the specified collection
+ */
 export const getImagesByCollection = async (
 	collection: string,
 	galleryPath: string = defaultGalleryPath,
-) => {
+): Promise<Image[]> => {
 	const images = await getImages(galleryPath);
 	return images.filter((image) => image.collections.includes(collection));
 };
 
+/**
+ * Retrieves all collections from the gallery
+ * @param galleryPath - Path to the gallery yaml file
+ * @returns {Promise<Collection[]>} Array of collections
+ */
 export const getCollections = async (
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Collection[]> => {
