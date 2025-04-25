@@ -50,6 +50,7 @@ export interface Image {
 	alt: string;
 	description: string;
 	featured: boolean;
+	collections: string[];
 }
 
 /**
@@ -64,11 +65,9 @@ type ImageModule = { default: ImageMetadata };
 export class ImageStoreError extends Error {
 	constructor(message: string) {
 		super(message);
-		this.name = 'ImageError';
+		this.name = 'ImageStoreError';
 	}
 }
-
-export type FilterBy = Partial<GalleryImage>;
 
 /**
  * Import all images from /src directory
@@ -79,6 +78,9 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 
 const defaultGalleryPath = 'src/gallery/gallery.yaml';
 
+export const featuredCollectionId = 'featured';
+const builtInCollections = [featuredCollectionId];
+
 /**
  * Loads and processes images from the collections
  * @param {string} [galleryPath=defaultGalleryPath] - Path to the collections directory
@@ -87,12 +89,11 @@ const defaultGalleryPath = 'src/gallery/gallery.yaml';
  * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
 export const getImages = async (
-	filterBy: FilterBy,
 	galleryPath: string = defaultGalleryPath,
 ): Promise<Image[]> => {
 	try {
 		const images = await (await loadGalleryData(galleryPath)).images;
-		return processImages(filterImages(images, filterBy), galleryPath);
+		return processImages(images, galleryPath);
 	} catch (error) {
 		throw new ImageStoreError(
 			`Failed to load images from ${galleryPath}: ${getErrorMsgFrom(error)}`,
@@ -125,7 +126,9 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 };
 
 function validateGalleryData(gallery: GalleryData) {
-	const collectionIds = gallery.collections.map((elem) => elem.id);
+	const collectionIds = gallery.collections
+		.map((col) => col.id)
+		.concat(builtInCollections);
 	for (const image of gallery.images) {
 		const invalidCollections = image.collections.filter(
 			(col) => !collectionIds.includes(col),
@@ -183,31 +186,16 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 		alt: img.alt,
 		description: img.description,
 		featured: img.featured,
+		collections: img.collections,
 	};
 };
 
-/**
- * Filters images based on the provided criteria
- * @param {GalleryImage[]} images - Array of images to filter
- * @param {any} filterBy - Filter criteria object
- * @returns {GalleryImage[]} Filtered array of images
- */
-const filterImages = (images: GalleryImage[], filterBy: FilterBy) => {
-	return images.filter((image) => {
-		const key = Object.keys(filterBy)[0] as keyof GalleryImage;
-		if (key) {
-			if (Array.isArray(image[key])) {
-				return image[key].every((v) =>
-					filterBy[key]
-						? Array.isArray(filterBy[key]) && filterBy[key].includes(v)
-						: false,
-				);
-			} else {
-				return image[key] === filterBy[key];
-			}
-		}
-		return true;
-	});
+export const getImagesByCollection = async (
+	collection: string,
+	galleryPath: string = defaultGalleryPath,
+) => {
+	const images = await getImages(galleryPath);
+	return images.filter((image) => image.collections.includes(collection));
 };
 
 export const getCollections = async (

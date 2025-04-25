@@ -1,7 +1,11 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import PhotoGrid from '../../components/PhotoGrid.astro';
-import { getCollections, getImages } from '../../data/imageStore';
+import {
+	getCollections,
+	getImages,
+	getImagesByCollection,
+} from '../../data/imageStore';
 
 const allCollection = {
 	id: undefined,
@@ -9,7 +13,9 @@ const allCollection = {
 };
 const collections = [allCollection, ...(await getCollections())];
 const { collection } = Astro.params;
-const images = await getImages(collection ? { collections: [collection] } : {});
+const images = collection
+	? await getImagesByCollection(collection)
+	: await getImages();
 const base = import.meta.env.BASE_URL;
 
 export const getStaticPaths = async () => {
