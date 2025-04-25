@@ -27,14 +27,12 @@ export interface Collection {
  * @property {string} path - Relative path to the image file
  * @property {string} alt - Alt text for accessibility and title
  * @property {string} description - Detailed description of the image
- * @property {boolean} featured - Whether the image should in featured collections
- * @property {string} collection - Name of the collection this image belongs to
+ * @property {string[]} collections - Array of collection IDs the image belongs to
  */
 export interface GalleryImage {
 	path: string;
 	alt: string;
 	description: string;
-	featured: boolean;
 	collections: string[];
 }
 
@@ -43,13 +41,12 @@ export interface GalleryImage {
  * @property {ImageMetadata} src - Image source metadata from Astro
  * @property {string} alt - Alt text for accessibility
  * @property {string} description - Detailed description of the image
- * @property {boolean} featured - Whether the image should be featured
+ * @property {string[]} collections - Array of collection IDs the image belongs to
  */
 export interface Image {
 	src: ImageMetadata;
 	alt: string;
 	description: string;
-	featured: boolean;
 	collections: string[];
 }
 
@@ -185,7 +182,6 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 		src: imageModule.default,
 		alt: img.alt,
 		description: img.description,
-		featured: img.featured,
 		collections: img.collections,
 	};
 };
