@@ -26,7 +26,7 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 	eager: true,
 });
 
-const defaultGalleryPath = 'src/gallery/gallery.yaml';
+const defaultGalleryPath = 'src/gallery/valid-gallery.yaml';
 
 export const featuredCollectionId = 'featured';
 const builtInCollections = [featuredCollectionId];
@@ -62,9 +62,7 @@ function getErrorMsgFrom(error: unknown) {
  */
 const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
-		const yamlPath = path.resolve(process.cwd(), galleryPath);
-		const content = await fs.readFile(yamlPath, 'utf8');
-		const gallery = yaml.load(content) as GalleryData;
+		const gallery = await loadGalleryDataFrom(galleryPath);
 		validateGalleryData(gallery);
 		return gallery;
 	} catch (error) {
@@ -73,6 +71,13 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 		);
 	}
 };
+
+async function loadGalleryDataFrom(galleryPath: string) {
+	const yamlPath = path.resolve(process.cwd(), galleryPath);
+	const content = await fs.readFile(yamlPath, 'utf8');
+	const gallery = yaml.load(content) as GalleryData;
+	return gallery;
+}
 
 function validateGalleryData(gallery: GalleryData) {
 	const collectionIds = gallery.collections

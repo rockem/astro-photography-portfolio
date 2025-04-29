@@ -9,10 +9,10 @@ import {
 
 const { getImages } = await import('../imageStore.ts');
 
-const testGalleryPath = 'src/data/__tests__/gallery/gallery.yaml';
+const testGalleryPath = 'src/data/__tests__/gallery/valid-gallery.yaml';
 
 const invalidGalleryPath =
-	'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
+	'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
 
 describe('Images Store', () => {
 	test('should retrieve all present images', async () => {
@@ -55,13 +55,13 @@ describe('Images Store', () => {
 	});
 
 	test('should fail on invalid gallery file', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
+		const galleryPath = 'src/data/__tests__/gallery/invalid-valid-gallery.yaml';
 		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 
 	test('should fail on invalid collection', async () => {
 		const galleryPath =
-			'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
+			'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
 		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 });
