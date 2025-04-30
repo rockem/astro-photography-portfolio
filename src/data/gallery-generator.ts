@@ -22,6 +22,7 @@ async function createGalleryObjFrom(galleryDir: string) {
 	});
 	const galleryObj = {
 		collections: createCollectionsFrom(imageFiles, galleryDir),
+		images: createImagesFrom(imageFiles, galleryDir),
 	};
 	return galleryObj;
 }
@@ -41,7 +42,20 @@ function toPascalCase(input: string): string {
 		.replace(/[^a-zA-Z0-9]+/g, ' ') // Replace non-alphanumerics with space
 		.split(' ') // Split by space
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize
-		.join('');
+		.join(' ');
+}
+
+function createImagesFrom(imageFiles: string[], galleryDir: string) {
+	return imageFiles.map((file) => {
+		const relativePath = path.relative(galleryDir, file);
+		return {
+			path: relativePath,
+			title: toPascalCase(
+				path.basename(relativePath, path.extname(relativePath)),
+			),
+			description: '',
+		};
+	});
 }
 
 async function writeGalleryYaml(
