@@ -28,11 +28,20 @@ async function createGalleryObjFrom(galleryDir: string) {
 
 function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
 	return imageFiles.map((file) => {
-		const relativePath = path.relative(galleryDir, file); // e.g. "collection1/image.jpg"
+		const relativePath = path.relative(galleryDir, file);
 		return {
 			id: path.dirname(relativePath),
-		}; // e.g. "collection1"
+			name: toPascalCase(path.dirname(relativePath)),
+		};
 	});
+}
+
+function toPascalCase(input: string): string {
+	return input
+		.replace(/[^a-zA-Z0-9]+/g, ' ') // Replace non-alphanumerics with space
+		.split(' ') // Split by space
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize
+		.join('');
 }
 
 async function writeGalleryYaml(

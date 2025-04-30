@@ -20,6 +20,7 @@ describe('valid gallery generation test', () => {
 
 		const collectionIds = gallery.collections.map((col: Collection) => col.id);
 
+		expect(collectionIds).toHaveLength(2);
 		expect(collectionIds).toContain('kuku');
 		expect(collectionIds).toContain('popo');
 	});
@@ -29,4 +30,17 @@ describe('valid gallery generation test', () => {
 		const content = await fs.readFile(yamlPath, 'utf8');
 		return yaml.load(content) as GalleryData;
 	}
+
+	it('should add collection names', async () => {
+		await execa('npx', ['tsx', scriptPath, testGalleryPath]);
+		const gallery = await loadGalleryDataFrom(testGalleryYaml);
+
+		const collectionNames = gallery.collections.map(
+			(col: Collection) => col.name,
+		);
+
+		expect(collectionNames).toHaveLength(2);
+		expect(collectionNames).toContain('Kuku');
+		expect(collectionNames).toContain('Popo');
+	});
 });

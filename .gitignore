@@ -24,4 +24,4 @@ pnpm-debug.log*
 .idea/
 
 # app
-src/data/__test__/gallery/gallery.yaml
+src/data/__tests__/gallery/gallery.yaml
