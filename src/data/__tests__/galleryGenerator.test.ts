@@ -11,7 +11,6 @@ const scriptPath = path.resolve(__dirname, '../gallery-generator.ts');
 
 function expectContainsOnlyObjectsWith(objArray: unknown, partials: unknown[]) {
 	expect(objArray).toHaveLength(partials.length);
-	console.log('Partials:', partials);
 	expect(objArray).toEqual(
 		expect.arrayContaining(partials.map((p) => expect.objectContaining(p))),
 	);
@@ -58,5 +57,11 @@ describe('Test Gallery Generator', () => {
 			{ title: 'Kuku Trees', description: '' },
 			{ title: 'Popo View', description: '' },
 		]);
+	});
+
+	it('should add images to collection by directory', async () => {
+		gallery.images.forEach((image) => {
+			expect(image.collections).toContain(path.dirname(image.path));
+		});
 	});
 });

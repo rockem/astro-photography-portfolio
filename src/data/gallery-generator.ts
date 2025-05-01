@@ -54,6 +54,7 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 				path.basename(relativePath, path.extname(relativePath)),
 			),
 			description: '',
+			collections: [path.dirname(relativePath)],
 		};
 	});
 }
