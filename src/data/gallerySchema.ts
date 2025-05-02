@@ -28,7 +28,18 @@ export interface Collection {
  */
 export interface GalleryImage {
 	path: string;
-	alt: string;
+	meta: Meta;
+}
+
+/**
+ * Represents the metadata of an image
+ * @property {string} path - Relative path to the image file
+ * @property {string} title - Title of the image
+ * @property {string} description - Detailed description of the image
+ * @property {string[]} collections - Array of collection IDs the image belongs to
+ */
+export interface Meta {
+	title: string;
 	description: string;
 	collections: string[];
 }

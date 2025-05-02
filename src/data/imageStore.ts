@@ -79,7 +79,7 @@ function validateGalleryData(gallery: GalleryData) {
 		.map((col) => col.id)
 		.concat(builtInCollections);
 	for (const image of gallery.images) {
-		const invalidCollections = image.collections.filter(
+		const invalidCollections = image.meta.collections.filter(
 			(col) => !collectionIds.includes(col),
 		);
 		if (invalidCollections.length > 0) {
@@ -132,9 +132,9 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 
 	return {
 		src: imageModule.default,
-		alt: img.alt,
-		description: img.description,
-		collections: img.collections,
+		alt: img.meta.title,
+		description: img.meta.description,
+		collections: img.meta.collections,
 	};
 };
 

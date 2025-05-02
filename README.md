@@ -84,6 +84,11 @@ if your file has a different name/location.
 2. Update the gallery details in `src/gallery/gallery.yaml`
 3. Images are automatically optimized during build
 
+### Adding photos to the featured section
+
+"featured" is a builtin collection and images can be added to by specifying it in the collections parameters like any
+other collection.
+
 ## 🛠️ Built With
 
 - [Astro](https://astro.build) - The web framework for content-driven websites
