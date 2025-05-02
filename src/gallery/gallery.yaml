@@ -8,51 +8,61 @@ collections:
 
 images:
   - path: nature/nature-1.jpg
-    alt: Nature scene 1
-    description: A beautiful nature landscape showcasing natural beauty.
-    collections: [featured, nature]
+    meta:
+      title: Nature scene 1
+      description: A beautiful nature landscape showcasing natural beauty.
+      collections: [featured, nature]
 
   - path: nature/nature-2.jpg
-    alt: Nature scene 2
-    description: Serene natural landscape capturing the essence of wilderness.
-    collections: [nature]
+    meta:
+      title: Nature scene 2
+      description: Serene natural landscape capturing the essence of wilderness.
+      collections: [nature]
 
   - path: nature/nature-3.jpg
-    alt: Nature scene 3
-    description: Dramatic natural vista showcasing environmental beauty.
-    collections: [featured, nature]
+    meta:
+      title: Nature scene 3
+      description: Breathtaking natural vista showcasing environmental beauty.
+      collections: [featured, nature]
 
   - path: nature/nature-5.jpg
-    alt: Nature scene 5
-    description: Natural landscape showing the raw beauty of the environment.
-    collections: [nature]
+    meta:
+      title: Nature scene 5
+      description: Natural landscape showing the raw beauty of the environment.
+      collections: [nature]
 
   - path: nature/nature-7.jpg
-    alt: Nature scene 7
-    description: Stunning natural landscape capturing environmental beauty.
-    collections: [featured, nature]
+    meta:
+      title: Nature scene 7
+      description: Stunning natural landscape capturing environmental beauty.
+      collections: [featured, nature]
 
   - path: nature/nature-8.jpg
-    alt: Nature scene 8
-    description: Beautiful natural vista showcasing environmental wonder.
-    collections: [nature]
+    meta:
+      title: Nature scene 8
+      description: Beautiful natural vista showcasing environmental wonder.
+      collections: [nature]
 
   - path: nature/L1002174.jpg
-    alt: Travel scene 6
-    description: My Image
-    collections: [featured, nature]
+    meta:
+      title: Travel scene 6
+      description: My Image
+      collections: [featured, nature]
 
   - path: nature/nature-10.jpg
-    alt: Nature scene 10
-    description: Majestic natural landscape displaying environmental splendor.
-    collections: [nature]
+    meta:
+      title: Nature scene 10
+      description: Majestic natural landscape displaying environmental splendor.
+      collections: [nature]
 
   - path: street/stree-1.jpg
-    alt: Street photography 1
-    description: Urban scene capturing the essence of city life.
-    collections: [featured, street]
+    meta:
+      title: Street photography 1
+      description: Urban scene capturing the essence of city life.
+      collections: [featured, street]
 
   - path: travel/travel-1.jpg
-    alt: Travel scene 1
-    description: Journey through remarkable destinations.
-    collections: [featured, travel]
+    meta:
+      title: Travel scene 1
+      description: Journey through remarkable destinations.
+      collections: [featured, travel]

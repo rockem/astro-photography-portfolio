@@ -4,6 +4,7 @@ collections:
 
 images:
   - path: kuku/kuku-trees.jpg
-    alt: Kuku Trees
-    description: Beautiful trees in the kuku album
-    collections: [kuku, invalid]
+    meta:
+      title: Kuku Trees
+      description: Beautiful trees in the kuku album
+      collections: [kuku, invalid]
