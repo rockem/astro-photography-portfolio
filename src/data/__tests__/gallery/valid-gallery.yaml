@@ -6,16 +6,19 @@ collections:
 
 images:
   - path: kuku/kuku-trees.jpg
-    alt: Kuku Trees
-    description: Beautiful trees in the kuku album
-    collections: [kuku]
+    meta:
+      title: Kuku Trees
+      description: Beautiful trees in the kuku album
+      collections: [kuku]
 
   - path: popo/popo-view.jpg
-    alt: Popo View
-    description: Amazing view from the popo album
-    collections: [featured, popo]
+    meta:
+      title: Popo View
+      description: Amazing view from the popo album
+      collections: [featured, popo]
 
   - path: popo/unknown.jpg
-    alt: Unknown image
-    description: bla bla
-    collections: [popo]
+    meta:
+      title: Unknown image
+      description: bla bla
+      collections: [popo]
