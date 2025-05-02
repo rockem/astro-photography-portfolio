@@ -25,7 +25,7 @@ describe('Images Store', () => {
 	test('should retrieve only featured images', async () => {
 		const images = await getImagesByCollection('featured', testGalleryPath);
 		expect(images).toHaveLength(1);
-		expect(images[0].alt).toEqual('Popo View');
+		expect(images[0].title).toEqual('Popo View');
 	});
 
 	test('should retrieve images of specific collection', async () => {

@@ -53,7 +53,7 @@ export interface Meta {
  */
 export interface Image {
 	src: ImageMetadata;
-	alt: string;
+	title: string;
 	description: string;
 	collections: string[];
 }
