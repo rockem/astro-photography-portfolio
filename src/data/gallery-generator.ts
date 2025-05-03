@@ -50,11 +50,13 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 		const relativePath = path.relative(galleryDir, file);
 		return {
 			path: relativePath,
-			title: toPascalCase(
-				path.basename(relativePath, path.extname(relativePath)),
-			),
-			description: '',
-			collections: [path.dirname(relativePath)],
+			meta: {
+				title: toPascalCase(
+					path.basename(relativePath, path.extname(relativePath)),
+				),
+				description: '',
+				collections: [path.dirname(relativePath)],
+			},
 		};
 	});
 }

@@ -4,17 +4,11 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import * as yaml from 'js-yaml';
 import type { GalleryData } from '../gallerySchema.ts';
+import { expectContainsOnlyObjectsWith } from './expect_util.ts';
 
 const testGalleryPath = 'src/data/__tests__/gallery';
 const testGalleryYaml = path.join('src/data/__tests__/gallery', 'gallery.yaml');
 const scriptPath = path.resolve(__dirname, '../gallery-generator.ts');
-
-function expectContainsOnlyObjectsWith(objArray: unknown, partials: unknown[]) {
-	expect(objArray).toHaveLength(partials.length);
-	expect(objArray).toEqual(
-		expect.arrayContaining(partials.map((p) => expect.objectContaining(p))),
-	);
-}
 
 describe('Test Gallery Generator', () => {
 	let gallery: GalleryData;
@@ -54,14 +48,14 @@ describe('Test Gallery Generator', () => {
 
 	it('should add images name and description', async () => {
 		expectContainsOnlyObjectsWith(gallery.images, [
-			{ title: 'Kuku Trees', description: '' },
-			{ title: 'Popo View', description: '' },
+			{ meta: { title: 'Kuku Trees', description: '' } },
+			{ meta: { title: 'Popo View', description: '' } },
 		]);
 	});
 
 	it('should add images to collection by directory', async () => {
 		gallery.images.forEach((image) => {
-			expect(image.collections).toContain(path.dirname(image.path));
+			expect(image.meta.collections).toContain(path.dirname(image.path));
 		});
 	});
 });
