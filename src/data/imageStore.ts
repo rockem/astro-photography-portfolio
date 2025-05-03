@@ -26,7 +26,7 @@ const imageModules = import.meta.glob('/src/**/*.{jpg,jpeg,png,gif}', {
 	eager: true,
 });
 
-const defaultGalleryPath = 'src/gallery/valid-gallery.yaml';
+const defaultGalleryPath = 'src/gallery/gallery.yaml';
 
 export const featuredCollectionId = 'featured';
 const builtInCollections = [featuredCollectionId];
