@@ -37,13 +37,13 @@ function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
 		.map((dir) => {
 			return {
 				id: dir,
-				name: toPascalCase(dir),
+				name: toReadableCaption(dir),
 			};
 		})
 		.filter((col) => col.id !== '.');
 }
 
-function toPascalCase(input: string): string {
+function toReadableCaption(input: string): string {
 	return input
 		.replace(/[^a-zA-Z0-9]+/g, ' ') // Replace non-alphanumerics with space
 		.split(' ') // Split by space
@@ -57,17 +57,17 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 		return {
 			path: relativePath,
 			meta: {
-				title: toPascalCase(
+				title: toReadableCaption(
 					path.basename(relativePath, path.extname(relativePath)),
 				),
 				description: '',
-				collections: collectionNameFor(relativePath),
+				collections: collectionIdForImage(relativePath),
 			},
 		};
 	});
 }
 
-function collectionNameFor(relativePath: string) {
+function collectionIdForImage(relativePath: string) {
 	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
 }
 
