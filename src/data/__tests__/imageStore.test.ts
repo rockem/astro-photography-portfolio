@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import kukuTrees from './gallery/kuku/kuku-trees.jpg';
 import popoView from './gallery/popo/popo-view.jpg';
+import landscape from './gallery/landscape.jpg';
 import {
 	getCollections,
 	getImagesByCollection,
@@ -17,9 +18,10 @@ const invalidGalleryPath =
 describe('Images Store', () => {
 	it('should retrieve all present images', async () => {
 		const imagesData = await getImages(testGalleryPath);
-		expect(imagesData).toHaveLength(2);
+		expect(imagesData).toHaveLength(3);
 		expect(imagesData[0].src).toEqual(kukuTrees);
 		expect(imagesData[1].src).toEqual(popoView);
+		expect(imagesData[2].src).toEqual(landscape);
 	});
 
 	it('should retrieve only featured images', async () => {
@@ -33,6 +35,7 @@ describe('Images Store', () => {
 		expect(images).toHaveLength(1);
 		expect(images[0].description).toContain('popo album');
 	});
+
 	it('should fail on getting a collection with invalid gallery yaml', async () => {
 		await expect(
 			getImagesByCollection('kuku', invalidGalleryPath),

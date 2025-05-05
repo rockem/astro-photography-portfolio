@@ -28,13 +28,15 @@ async function createGalleryObjFrom(galleryDir: string) {
 }
 
 function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
-	return imageFiles.map((file) => {
-		const relativePath = path.relative(galleryDir, file);
-		return {
-			id: path.dirname(relativePath),
-			name: toPascalCase(path.dirname(relativePath)),
-		};
-	});
+	return imageFiles
+		.map((file) => {
+			const relativePath = path.relative(galleryDir, file);
+			return {
+				id: path.dirname(relativePath),
+				name: toPascalCase(path.dirname(relativePath)),
+			};
+		})
+		.filter((col) => col.id !== '.');
 }
 
 function toPascalCase(input: string): string {
@@ -55,10 +57,14 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 					path.basename(relativePath, path.extname(relativePath)),
 				),
 				description: '',
-				collections: [path.dirname(relativePath)],
+				collections: collectionNameFor(relativePath),
 			},
 		};
 	});
+}
+
+function collectionNameFor(relativePath: string) {
+	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
 }
 
 async function writeGalleryYaml(

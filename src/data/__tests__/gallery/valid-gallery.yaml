@@ -17,6 +17,12 @@ images:
       description: Amazing view from the popo album
       collections: [featured, popo]
 
+  - path: landscape.jpg
+    meta:
+      title: Landscape
+      description:
+      collections: []
+
   - path: popo/unknown.jpg
     meta:
       title: Unknown image
