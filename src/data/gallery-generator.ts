@@ -67,10 +67,7 @@ function collectionNameFor(relativePath: string) {
 	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
 }
 
-async function writeGalleryYaml(
-	galleryDir: string,
-	galleryObj: { collections: { id: string }[] },
-) {
+async function writeGalleryYaml(galleryDir: string, galleryObj: never) {
 	const filePath = path.join(galleryDir, defaultGalleryFileName);
 	await fs.promises.writeFile(filePath, yaml.dump(galleryObj), 'utf8');
 	console.log('Gallery file created successfully at:', filePath);
