@@ -86,4 +86,9 @@ if (!directoryPath || !fs.existsSync(directoryPath)) {
 	process.exit(1);
 }
 
-createGalleryFile(directoryPath);
+(async () => {
+	await createGalleryFile(directoryPath);
+})().catch((error) => {
+	console.error('Unhandled error:', error);
+	process.exit(1);
+});
