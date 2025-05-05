@@ -29,12 +29,15 @@ async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
 }
 
 function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
-	return imageFiles
-		.map((file) => {
-			const relativePath = path.relative(galleryDir, file);
+	const uniqueDirNames = new Set(
+		imageFiles.map((file) => path.dirname(path.relative(galleryDir, file))),
+	);
+
+	return [...uniqueDirNames]
+		.map((dir) => {
 			return {
-				id: path.dirname(relativePath),
-				name: toPascalCase(path.dirname(relativePath)),
+				id: dir,
+				name: toPascalCase(dir),
 			};
 		})
 		.filter((col) => col.id !== '.');

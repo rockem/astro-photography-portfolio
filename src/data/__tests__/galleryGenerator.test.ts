@@ -35,6 +35,7 @@ describe('Test Gallery Generator', () => {
 	it('should add images path', async () => {
 		expectContainsOnlyObjectsWith(gallery.images, [
 			{ path: 'kuku/kuku-trees.jpg' },
+			{ path: 'kuku/kuku-bubble.jpg' },
 			{ path: 'popo/popo-view.jpg' },
 			{ path: 'landscape.jpg' },
 		]);
@@ -43,6 +44,7 @@ describe('Test Gallery Generator', () => {
 	it('should add images name and description', async () => {
 		expectContainsOnlyObjectsWith(gallery.images, [
 			{ meta: { title: 'Kuku Trees', description: '' } },
+			{ meta: { title: 'Kuku Bubble', description: '' } },
 			{ meta: { title: 'Popo View', description: '' } },
 			{ meta: { title: 'Landscape', description: '' } },
 		]);
@@ -51,6 +53,7 @@ describe('Test Gallery Generator', () => {
 	it('should add images to collection by directory', async () => {
 		expectContainsOnlyObjectsWith(gallery.images, [
 			{ path: 'kuku/kuku-trees.jpg', meta: { collections: ['kuku'] } },
+			{ path: 'kuku/kuku-bubble.jpg', meta: { collections: ['kuku'] } },
 			{ path: 'popo/popo-view.jpg', meta: { collections: ['popo'] } },
 			{ path: 'landscape.jpg', meta: { collections: [] } },
 		]);
