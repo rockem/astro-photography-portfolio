@@ -3,6 +3,7 @@ import * as fs from 'node:fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
+import type { GalleryData } from './galleryData.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
 
@@ -16,7 +17,7 @@ async function createGalleryFile(galleryDir: string): Promise<void> {
 	}
 }
 
-async function createGalleryObjFrom(galleryDir: string) {
+async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
 	const imageFiles = await fg(`${galleryDir}/**/*.{jpg,jpeg,png}`, {
 		dot: false,
 	});
@@ -67,7 +68,7 @@ function collectionNameFor(relativePath: string) {
 	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
 }
 
-async function writeGalleryYaml(galleryDir: string, galleryObj: never) {
+async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {
 	const filePath = path.join(galleryDir, defaultGalleryFileName);
 	await fs.promises.writeFile(filePath, yaml.dump(galleryObj), 'utf8');
 	console.log('Gallery file created successfully at:', filePath);
