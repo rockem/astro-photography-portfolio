@@ -46,7 +46,7 @@ images:
   - path: nature/L1002174.jpg
     meta:
       title: Travel scene 6
-      description: My Image
+      description:
       collections: [featured, nature]
 
   - path: nature/nature-10.jpg
