@@ -1,13 +1,12 @@
-import { promises as fs } from 'fs';
-import * as yaml from 'js-yaml';
 import path from 'path';
-import type {
-	ImageModule,
-	Collection,
-	GalleryData,
-	GalleryImage,
-	Image,
-} from './gallerySchema.ts';
+import {
+	type Collection,
+	type GalleryData,
+	type GalleryImage,
+	type Image,
+	type ImageModule,
+	loadGallery,
+} from './galleryData.ts';
 
 /**
  * Error class for image-related errors
@@ -62,9 +61,7 @@ function getErrorMsgFrom(error: unknown) {
  */
 const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
-		const yamlPath = path.resolve(process.cwd(), galleryPath);
-		const content = await fs.readFile(yamlPath, 'utf8');
-		const gallery = yaml.load(content) as GalleryData;
+		const gallery = await loadGallery(galleryPath);
 		validateGalleryData(gallery);
 		return gallery;
 	} catch (error) {

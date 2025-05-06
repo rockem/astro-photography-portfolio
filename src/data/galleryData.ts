@@ -1,4 +1,7 @@
 import type { ImageMetadata } from 'astro';
+import path from 'path';
+import { promises as fs } from 'fs';
+import * as yaml from 'js-yaml';
 
 /**
  * Structure of the collections YAML file
@@ -63,3 +66,9 @@ export interface Image {
  * @property {ImageMetadata} default - Default export containing image metadata
  */
 export type ImageModule = { default: ImageMetadata };
+
+export const loadGallery = async (galleryPath: string) => {
+	const yamlPath = path.resolve(process.cwd(), galleryPath);
+	const content = await fs.readFile(yamlPath, 'utf8');
+	return yaml.load(content) as GalleryData;
+};

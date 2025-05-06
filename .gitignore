@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# app
+src/data/__tests__/gallery/gallery.yaml
