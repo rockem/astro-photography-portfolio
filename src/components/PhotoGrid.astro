@@ -19,11 +19,9 @@ const { images } = Astro.props;
 				class="photo-item glightbox absolute transition-transform hover:scale-[1.02] hover:z-10"
 				data-gallery="gallery1"
 				data-type="image"
-				{...(image.description
-					? {
-							'data-glightbox': `title: ${image.description}}`,
-						}
-					: {})}
+				data-glightbox={
+					image.description ? `title: ${image.description}` : undefined
+				}
 			>
 				<Image
 					src={image.src}
