@@ -2,18 +2,13 @@ import { describe, expect, it } from 'vitest';
 import kukuTrees from './gallery/kuku/kuku-trees.jpg';
 import popoView from './gallery/popo/popo-view.jpg';
 import landscape from './gallery/landscape.jpg';
-import {
-	getCollections,
-	getImagesByCollection,
-	ImageStoreError,
-} from '../imageStore.ts';
+import { getCollections, getImagesByCollection, ImageStoreError } from '../imageStore.ts';
 
 const { getImages } = await import('../imageStore.ts');
 
 const testGalleryPath = 'src/data/__tests__/gallery/valid-gallery.yaml';
 
-const invalidGalleryPath =
-	'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
+const invalidGalleryPath = 'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
 
 describe('Images Store', () => {
 	it('should retrieve all present images', async () => {
@@ -37,9 +32,9 @@ describe('Images Store', () => {
 	});
 
 	it('should fail on getting a collection with invalid gallery yaml', async () => {
-		await expect(
-			getImagesByCollection('kuku', invalidGalleryPath),
-		).rejects.toThrow(ImageStoreError);
+		await expect(getImagesByCollection('kuku', invalidGalleryPath)).rejects.toThrow(
+			ImageStoreError,
+		);
 	});
 
 	it('should retrieve all collection names', async () => {
@@ -52,9 +47,7 @@ describe('Images Store', () => {
 	});
 
 	it('should fail on a missing gallery file', async () => {
-		await expect(getImages(invalidGalleryPath)).rejects.toThrow(
-			ImageStoreError,
-		);
+		await expect(getImages(invalidGalleryPath)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should fail on invalid gallery file', async () => {
@@ -63,8 +56,7 @@ describe('Images Store', () => {
 	});
 
 	it('should fail on invalid collection', async () => {
-		const galleryPath =
-			'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
+		const galleryPath = 'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
 		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 });

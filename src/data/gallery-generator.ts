@@ -3,22 +3,34 @@ import * as fs from 'node:fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
-import {
-	type GalleryData,
-	loadGallery,
-	NullGalleryData,
-} from './galleryData.ts';
+import { type GalleryData, loadGallery, NullGalleryData } from './galleryData.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
+
+async function createGalleryFile(galleryDir: string): Promise<void> {
+	try {
+		let galleryObj = await loadExistingGallery(galleryDir);
+		galleryObj = mergeGalleriesObj(galleryObj, await createGalleryObjFrom(galleryDir));
+		await writeGalleryYaml(galleryDir, galleryObj);
+	} catch (error) {
+		console.error('Failed to create gallery file:', error);
+		process.exit(1);
+	}
+}
+
+async function loadExistingGallery(galleryDir: string) {
+	const existingGalleryFile = path.join(galleryDir, defaultGalleryFileName);
+	if (fs.existsSync(existingGalleryFile)) {
+		return await loadGallery(existingGalleryFile);
+	}
+	return NullGalleryData;
+}
 
 function mergeGalleriesObj(
 	targetGalleryObj: GalleryData,
 	sourceGalleryObj: GalleryData,
 ): GalleryData {
-	console.log(targetGalleryObj);
-	const imagesMap = new Map(
-		targetGalleryObj.images.map((image) => [image.path, image]),
-	);
+	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
 	sourceGalleryObj.images.map((image) => {
 		if (!imagesMap.get(image.path)) {
 			imagesMap.set(image.path, image);
@@ -29,24 +41,6 @@ function mergeGalleriesObj(
 		collections: sourceGalleryObj.collections,
 		images: Array.from(imagesMap.values()),
 	};
-}
-
-async function createGalleryFile(galleryDir: string): Promise<void> {
-	try {
-		let galleryObj = NullGalleryData;
-		const existingGalleryFile = path.join(galleryDir, defaultGalleryFileName);
-		if (fs.existsSync(existingGalleryFile)) {
-			galleryObj = await loadGallery(existingGalleryFile);
-		}
-		galleryObj = mergeGalleriesObj(
-			galleryObj,
-			await createGalleryObjFrom(galleryDir),
-		);
-		await writeGalleryYaml(galleryDir, galleryObj);
-	} catch (error) {
-		console.error('Failed to create gallery file:', error);
-		process.exit(1);
-	}
 }
 
 async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
@@ -89,9 +83,7 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 		return {
 			path: relativePath,
 			meta: {
-				title: toReadableCaption(
-					path.basename(relativePath, path.extname(relativePath)),
-				),
+				title: toReadableCaption(path.basename(relativePath, path.extname(relativePath))),
 				description: '',
 				collections: collectionIdForImage(relativePath),
 			},

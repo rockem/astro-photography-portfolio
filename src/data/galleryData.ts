@@ -67,9 +67,7 @@ export interface Image {
  */
 export type ImageModule = { default: ImageMetadata };
 
-export const loadGallery = async (
-	galleryPath: string,
-): Promise<GalleryData> => {
+export const loadGallery = async (galleryPath: string): Promise<GalleryData> => {
 	const yamlPath = path.resolve(process.cwd(), galleryPath);
 	const content = await fs.readFile(yamlPath, 'utf8');
 	return yaml.load(content) as GalleryData;
