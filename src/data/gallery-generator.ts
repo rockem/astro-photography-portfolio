@@ -3,13 +3,45 @@ import * as fs from 'node:fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
-import type { GalleryData } from './galleryData.ts';
+import {
+	type GalleryData,
+	loadGallery,
+	NullGalleryData,
+} from './galleryData.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
 
+function mergeGalleriesObj(
+	targetGalleryObj: GalleryData,
+	sourceGalleryObj: GalleryData,
+): GalleryData {
+	console.log(targetGalleryObj);
+	const imagesMap = new Map(
+		targetGalleryObj.images.map((image) => [image.path, image]),
+	);
+	sourceGalleryObj.images.map((image) => {
+		if (!imagesMap.get(image.path)) {
+			imagesMap.set(image.path, image);
+		}
+	});
+
+	return {
+		collections: sourceGalleryObj.collections,
+		images: Array.from(imagesMap.values()),
+	};
+}
+
 async function createGalleryFile(galleryDir: string): Promise<void> {
 	try {
-		const galleryObj = await createGalleryObjFrom(galleryDir);
+		let galleryObj = NullGalleryData;
+		const existingGalleryFile = path.join(galleryDir, defaultGalleryFileName);
+		if (fs.existsSync(existingGalleryFile)) {
+			galleryObj = await loadGallery(existingGalleryFile);
+		}
+		galleryObj = mergeGalleriesObj(
+			galleryObj,
+			await createGalleryObjFrom(galleryDir),
+		);
 		await writeGalleryYaml(galleryDir, galleryObj);
 	} catch (error) {
 		console.error('Failed to create gallery file:', error);

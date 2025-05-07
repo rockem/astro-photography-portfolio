@@ -1,9 +1,10 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { execa } from 'execa';
 import path from 'path';
-import { promises as fs } from 'fs';
+import * as fs from 'node:fs';
 import { type GalleryData, loadGallery } from '../galleryData.ts';
 import { expectContainsOnlyObjectsWith } from './expect_util.ts';
+import yaml from 'js-yaml';
 
 const testGalleryPath = 'src/data/__tests__/gallery';
 const testGalleryYaml = path.join('src/data/__tests__/gallery', 'gallery.yaml');
@@ -13,7 +14,7 @@ describe('Test Gallery Generator', () => {
 	let gallery: GalleryData;
 
 	beforeAll(async () => {
-		await fs.rm(path.join(testGalleryYaml), { force: true });
+		await fs.promises.rm(path.join(testGalleryYaml), { force: true });
 		await execa('npx', ['tsx', scriptPath, testGalleryPath]);
 		gallery = await loadGallery(testGalleryYaml);
 	});
@@ -64,5 +65,26 @@ describe('Test Gallery Generator', () => {
 		await expect(
 			execa('npx', ['tsx', scriptPath, 'invalid-path']),
 		).rejects.toThrow('Invalid directory path provided.');
+	});
+
+	it('should not override an existing title and description', async () => {
+		const image = gallery.images.find(
+			(img) => img.path === 'kuku/kuku-trees.jpg',
+		);
+		if (!image) throw new Error('Image not found');
+		image.meta.title = 'Custom Title';
+		image.meta.description = 'Custom Description';
+		await fs.promises.writeFile(testGalleryYaml, yaml.dump(gallery), 'utf8');
+		await execa('npx', ['tsx', scriptPath, testGalleryPath]);
+		gallery = await loadGallery(testGalleryYaml);
+		const updatedImage = gallery.images.find(
+			(img) => img.path === 'kuku/kuku-trees.jpg',
+		);
+		expect(updatedImage?.meta).toEqual(
+			expect.objectContaining({
+				title: 'Custom Title',
+				description: 'Custom Description',
+			}),
+		);
 	});
 });
