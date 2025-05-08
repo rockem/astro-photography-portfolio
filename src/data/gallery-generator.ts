@@ -113,7 +113,7 @@ function collectionIdForImage(relativePath: string) {
 async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {
 	const filePath = path.join(galleryDir, defaultGalleryFileName);
 	await fs.promises.writeFile(filePath, yaml.dump(galleryObj), 'utf8');
-	console.log('Gallery file created successfully at:', filePath);
+	console.log('Gallery file created/updated successfully at:', filePath);
 }
 
 program.argument('<path to images directory>');
