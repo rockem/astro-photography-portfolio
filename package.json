@@ -9,7 +9,8 @@
 		"astro": "astro",
 		"prettier": "prettier . --write",
 		"test": "vitest",
-		"lint": "eslint . --ext .ts,.js,.astro"
+		"lint": "eslint . --ext .ts,.js,.astro",
+		"generate": "npx tsx src/data/gallery-generator.ts src/gallery"
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.16",

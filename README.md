@@ -15,6 +15,7 @@ Ideal for photographers who want to showcase their work through a sleek, perform
 - Multiple albums support
 - Image zoom capabilities
 - Automatic deployment to GitHub pages
+- Script to automatically create a gallery from images
 
 ## 🚀 Getting Started
 
@@ -81,12 +82,14 @@ if your file has a different name/location.
 ### Adding Your Photos
 
 1. Place your images in the `src/gallery/<album>` directory
-2. Update the gallery details in `src/gallery/gallery.yaml`
-3. Images are automatically optimized during build
+2. Update the gallery details in `src/gallery/gallery.yaml`. Optionally, you can run `npm run generate` to generate a
+   gallery.yaml file from the images in the directory.
+3. Update meta-data for images in the `src/gallery/gallery.yaml` file.
+4. Images are automatically optimized during build
 
 ### Adding photos to the featured section
 
-"featured" is a builtin collection and images can be added to by specifying it in the collections parameters like any
+"featured" is a builtin collection, and images can be added to it by specifying it in the collections parameter like any
 other collection.
 
 ## 🛠️ Built With
@@ -105,7 +108,7 @@ other collection.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 

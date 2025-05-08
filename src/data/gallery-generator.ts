@@ -3,18 +3,59 @@ import * as fs from 'node:fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
-import type { GalleryData } from './galleryData.ts';
+import { type GalleryData, loadGallery, NullGalleryData } from './galleryData.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
 
-async function createGalleryFile(galleryDir: string): Promise<void> {
+async function generateGalleryFile(galleryDir: string): Promise<void> {
 	try {
-		const galleryObj = await createGalleryObjFrom(galleryDir);
+		let galleryObj = await loadExistingGallery(galleryDir);
+		galleryObj = mergeGalleriesObj(galleryObj, await createGalleryObjFrom(galleryDir));
 		await writeGalleryYaml(galleryDir, galleryObj);
 	} catch (error) {
 		console.error('Failed to create gallery file:', error);
 		process.exit(1);
 	}
+}
+
+async function loadExistingGallery(galleryDir: string) {
+	const existingGalleryFile = path.join(galleryDir, defaultGalleryFileName);
+	if (fs.existsSync(existingGalleryFile)) {
+		return await loadGallery(existingGalleryFile);
+	}
+	return NullGalleryData;
+}
+
+function mergeGalleriesObj(
+	targetGalleryObj: GalleryData,
+	sourceGalleryObj: GalleryData,
+): GalleryData {
+	return {
+		collections: getUpdatedCollectionList(targetGalleryObj, sourceGalleryObj),
+		images: getUpdatedImageList(targetGalleryObj, sourceGalleryObj),
+	};
+}
+
+function getUpdatedImageList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
+	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
+	sourceGalleryObj.images.forEach((image) => {
+		if (!imagesMap.get(image.path)) {
+			imagesMap.set(image.path, image);
+		}
+	});
+	return Array.from(imagesMap.values());
+}
+
+function getUpdatedCollectionList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
+	const collectionsMap = new Map(
+		targetGalleryObj.collections.map((collection) => [collection.id, collection]),
+	);
+	sourceGalleryObj.collections.forEach((collection) => {
+		if (!collectionsMap.get(collection.id)) {
+			collectionsMap.set(collection.id, collection);
+		}
+	});
+	return Array.from(collectionsMap.values());
 }
 
 async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
@@ -57,9 +98,7 @@ function createImagesFrom(imageFiles: string[], galleryDir: string) {
 		return {
 			path: relativePath,
 			meta: {
-				title: toReadableCaption(
-					path.basename(relativePath, path.extname(relativePath)),
-				),
+				title: toReadableCaption(path.basename(relativePath, path.extname(relativePath))),
 				description: '',
 				collections: collectionIdForImage(relativePath),
 			},
@@ -74,7 +113,7 @@ function collectionIdForImage(relativePath: string) {
 async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {
 	const filePath = path.join(galleryDir, defaultGalleryFileName);
 	await fs.promises.writeFile(filePath, yaml.dump(galleryObj), 'utf8');
-	console.log('Gallery file created successfully at:', filePath);
+	console.log('Gallery file created/updated successfully at:', filePath);
 }
 
 program.argument('<path to images directory>');
@@ -87,7 +126,7 @@ if (!directoryPath || !fs.existsSync(directoryPath)) {
 }
 
 (async () => {
-	await createGalleryFile(directoryPath);
+	await generateGalleryFile(directoryPath);
 })().catch((error) => {
 	console.error('Unhandled error:', error);
 	process.exit(1);

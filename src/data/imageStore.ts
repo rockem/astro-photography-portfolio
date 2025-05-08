@@ -36,9 +36,7 @@ const builtInCollections = [featuredCollectionId];
  * @returns {Promise<Image[]>} Array of processed images
  * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
  */
-export const getImages = async (
-	galleryPath: string = defaultGalleryPath,
-): Promise<Image[]> => {
+export const getImages = async (galleryPath: string = defaultGalleryPath): Promise<Image[]> => {
 	try {
 		const images = await (await loadGalleryData(galleryPath)).images;
 		return processImages(images, galleryPath);
@@ -72,13 +70,9 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 };
 
 function validateGalleryData(gallery: GalleryData) {
-	const collectionIds = gallery.collections
-		.map((col) => col.id)
-		.concat(builtInCollections);
+	const collectionIds = gallery.collections.map((col) => col.id).concat(builtInCollections);
 	for (const image of gallery.images) {
-		const invalidCollections = image.meta.collections.filter(
-			(col) => !collectionIds.includes(col),
-		);
+		const invalidCollections = image.meta.collections.filter((col) => !collectionIds.includes(col));
 		if (invalidCollections.length > 0) {
 			throw new ImageStoreError(
 				`Invalid collection(s) [${invalidCollections.join(', ')}] referenced in image: ${image.path}`,
@@ -94,16 +88,9 @@ function validateGalleryData(gallery: GalleryData) {
  * @returns {Image[]} Array of processed images with metadata
  * @throws {ImageStoreError} If an image module cannot be found
  */
-const processImages = (
-	images: GalleryImage[],
-	galleryPath: string,
-): Image[] => {
+const processImages = (images: GalleryImage[], galleryPath: string): Image[] => {
 	return images.reduce<Image[]>((acc, imageEntry) => {
-		const imagePath = path.join(
-			'/',
-			path.parse(galleryPath).dir,
-			imageEntry.path,
-		);
+		const imagePath = path.posix.join('/', path.parse(galleryPath).dir, imageEntry.path);
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
 		} catch (error) {

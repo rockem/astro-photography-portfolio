@@ -16,11 +16,7 @@ const socialLinks = siteConfig.socialLinks;
 			</div>
 
 			<div class="flex space-x-6">
-				{
-					socialLinks.map((socialLink) => (
-						<SocialIcon socialLink={socialLink} />
-					))
-				}
+				{socialLinks.map((socialLink) => <SocialIcon socialLink={socialLink} />)}
 			</div>
 		</div>
 	</div>

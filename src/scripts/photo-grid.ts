@@ -55,9 +55,7 @@ export async function setupGallery() {
 		return;
 	}
 
-	const imageLinks = Array.from(
-		container.querySelectorAll('.photo-item'),
-	) as HTMLElement[];
+	const imageLinks = Array.from(container.querySelectorAll('.photo-item')) as HTMLElement[];
 
 	if (imageLinks.length === 0) {
 		console.warn('No images found inside the photo grid.');
@@ -103,9 +101,7 @@ function createLayoutFor(
 }
 
 async function waitForImagesToLoad(container: HTMLElement) {
-	const imageElements = Array.from(
-		container.querySelectorAll('img'),
-	) as HTMLImageElement[];
+	const imageElements = Array.from(container.querySelectorAll('img')) as HTMLImageElement[];
 
 	await Promise.all(
 		imageElements.map(
@@ -123,10 +119,7 @@ async function waitForImagesToLoad(container: HTMLElement) {
 	return imageElements;
 }
 
-function applyImagesStyleBasedOnLayout(
-	imageLinks: HTMLElement[],
-	layout: JustifiedLayoutResult,
-) {
+function applyImagesStyleBasedOnLayout(imageLinks: HTMLElement[], layout: JustifiedLayoutResult) {
 	imageLinks.forEach((el, i) => {
 		if (!layout.boxes[i]) return;
 		const { left, top, width, height } = layout.boxes[i];
@@ -140,10 +133,7 @@ function applyImagesStyleBasedOnLayout(
 	});
 }
 
-function applyContainerStyleBasedOnLayout(
-	container: HTMLElement,
-	layout: JustifiedLayoutResult,
-) {
+function applyContainerStyleBasedOnLayout(container: HTMLElement, layout: JustifiedLayoutResult) {
 	// Ensure the parent container has relative positioning
 	container.style.position = 'relative';
 	// Set container height
@@ -158,10 +148,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Debounce helper
-function debounce<T extends (...args: unknown[]) => unknown>(
-	func: T,
-	wait: number,
-) {
+function debounce<T extends (...args: unknown[]) => unknown>(func: T, wait: number) {
 	let timeout: ReturnType<typeof setTimeout>;
 	return function executedFunction(...args: Parameters<T>) {
 		const later = () => {
