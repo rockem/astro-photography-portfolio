@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { execa } from 'execa';
 import path from 'path';
 import * as fs from 'node:fs';
-import { type GalleryData, type GalleryImage, loadGallery } from '../galleryData.ts';
+import { type GalleryData, type GalleryImage, loadGallery, type Meta } from '../galleryData.ts';
 import { expectContainsOnlyObjectsWith } from './expect_util.ts';
 import yaml from 'js-yaml';
 
@@ -72,36 +72,61 @@ describe('Test Gallery Generator', () => {
 	});
 
 	describe('Existing gallery', () => {
-		it('should not override an existing title and description', async () => {
+		it('should not override an existing image meta data', async () => {
 			const imagePath = 'kuku/kuku-trees.jpg';
-			const customTitle = 'Custom Title';
-			const customDescription = 'Custom Description';
-			await updateGalleryImageMeta(imagePath, {
-				title: customTitle,
-				description: customDescription,
-			});
+			const imageCustomMeta = {
+				title: 'Custom Title',
+				description: 'Custom Description',
+				collections: ['featured'],
+			};
+
+			await updateGalleryImageMeta(imagePath, imageCustomMeta);
 
 			await generateGallery();
 
 			const updatedImage = findImageByPath(imagePath);
-			expect(updatedImage.meta).toEqual(
-				expect.objectContaining({
-					title: customTitle,
-					description: customDescription,
-				}),
-			);
+			expect(updatedImage.meta).toEqual(imageCustomMeta);
 		});
 
-		async function updateGalleryImageMeta(path: string, props: Record<string, unknown>) {
+		async function updateGalleryImageMeta(path: string, imageMeta: Meta) {
 			const image = findImageByPath(path);
-			image.meta = { ...image.meta, ...props };
-			await fs.promises.writeFile(testGalleryYaml, yaml.dump(gallery), 'utf8');
+			image.meta = imageMeta;
+			await writeGalleryFile();
 		}
 
 		function findImageByPath(path: string): GalleryImage {
 			const image = gallery.images.find((img) => img.path === path);
 			if (!image) throw new Error(`Image [${path}] not found`);
 			return image;
+		}
+
+		async function writeGalleryFile() {
+			await fs.promises.writeFile(testGalleryYaml, yaml.dump(gallery), 'utf8');
+		}
+
+		it('should not update collection if already exists', async () => {
+			const collectionId = 'kuku';
+			const customCollectionName = 'Hello Kuku';
+
+			await updateGalleryCollectionId(collectionId, customCollectionName);
+
+			await generateGallery();
+
+			const updatedCollection = findCollectionById(collectionId);
+			expect(updatedCollection.name).toEqual(customCollectionName);
+		});
+
+		async function updateGalleryCollectionId(collectionId: string, collectionName: string) {
+			const collection = findCollectionById(collectionId);
+			if (!collection) throw new Error(`Collection [${collectionId}] not found`);
+			collection.name = collectionName;
+			await writeGalleryFile();
+		}
+
+		function findCollectionById(collectionId: string) {
+			const collection = gallery.collections.find((col) => col.id === collectionId);
+			if (!collection) throw new Error(`Collection [${collectionId}] not found`);
+			return collection;
 		}
 	});
 });

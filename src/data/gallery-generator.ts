@@ -7,7 +7,7 @@ import { type GalleryData, loadGallery, NullGalleryData } from './galleryData.ts
 
 const defaultGalleryFileName = 'gallery.yaml';
 
-async function createGalleryFile(galleryDir: string): Promise<void> {
+async function generateGalleryFile(galleryDir: string): Promise<void> {
 	try {
 		let galleryObj = await loadExistingGallery(galleryDir);
 		galleryObj = mergeGalleriesObj(galleryObj, await createGalleryObjFrom(galleryDir));
@@ -30,17 +30,32 @@ function mergeGalleriesObj(
 	targetGalleryObj: GalleryData,
 	sourceGalleryObj: GalleryData,
 ): GalleryData {
+	return {
+		collections: getUpdatedCollectionList(targetGalleryObj, sourceGalleryObj),
+		images: getUpdatedImageList(targetGalleryObj, sourceGalleryObj),
+	};
+}
+
+function getUpdatedImageList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
 	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
 	sourceGalleryObj.images.map((image) => {
 		if (!imagesMap.get(image.path)) {
 			imagesMap.set(image.path, image);
 		}
 	});
+	return Array.from(imagesMap.values());
+}
 
-	return {
-		collections: sourceGalleryObj.collections,
-		images: Array.from(imagesMap.values()),
-	};
+function getUpdatedCollectionList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
+	const collectionsMap = new Map(
+		targetGalleryObj.collections.map((collection) => [collection.id, collection]),
+	);
+	sourceGalleryObj.collections.map((collection) => {
+		if (!collectionsMap.get(collection.id)) {
+			collectionsMap.set(collection.id, collection);
+		}
+	});
+	return Array.from(collectionsMap.values());
 }
 
 async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
@@ -111,7 +126,7 @@ if (!directoryPath || !fs.existsSync(directoryPath)) {
 }
 
 (async () => {
-	await createGalleryFile(directoryPath);
+	await generateGalleryFile(directoryPath);
 })().catch((error) => {
 	console.error('Unhandled error:', error);
 	process.exit(1);
