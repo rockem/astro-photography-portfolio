@@ -64,7 +64,6 @@ describe('Test Gallery Generator', () => {
 
 	describe('Error handling', () => {
 		it('should fail on invalid gallery path', async () => {
-			console.error('Invalid directory path provided.');
 			await expect(execa('npx', ['tsx', scriptPath, 'invalid-path'])).rejects.toThrow(
 				'Invalid directory path provided.',
 			);

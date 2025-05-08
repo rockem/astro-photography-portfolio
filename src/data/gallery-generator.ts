@@ -38,7 +38,7 @@ function mergeGalleriesObj(
 
 function getUpdatedImageList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
 	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
-	sourceGalleryObj.images.map((image) => {
+	sourceGalleryObj.images.forEach((image) => {
 		if (!imagesMap.get(image.path)) {
 			imagesMap.set(image.path, image);
 		}
@@ -50,7 +50,7 @@ function getUpdatedCollectionList(targetGalleryObj: GalleryData, sourceGalleryOb
 	const collectionsMap = new Map(
 		targetGalleryObj.collections.map((collection) => [collection.id, collection]),
 	);
-	sourceGalleryObj.collections.map((collection) => {
+	sourceGalleryObj.collections.forEach((collection) => {
 		if (!collectionsMap.get(collection.id)) {
 			collectionsMap.set(collection.id, collection);
 		}

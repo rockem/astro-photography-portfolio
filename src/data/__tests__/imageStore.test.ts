@@ -8,7 +8,7 @@ const { getImages } = await import('../imageStore.ts');
 
 const testGalleryPath = 'src/data/__tests__/gallery/valid-gallery.yaml';
 
-const invalidGalleryPath = 'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
+const invalidGalleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
 
 describe('Images Store', () => {
 	it('should retrieve all present images', async () => {
@@ -47,16 +47,17 @@ describe('Images Store', () => {
 	});
 
 	it('should fail on a missing gallery file', async () => {
-		await expect(getImages(invalidGalleryPath)).rejects.toThrow(ImageStoreError);
+		const galleryPath = 'src/data/__tests__/gallery/no-gallery.yaml';
+		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should fail on invalid gallery file', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/invalid-valid-gallery.yaml';
+		const galleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
 		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should fail on invalid collection', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/invalid-collection-valid-gallery.yaml';
+		const galleryPath = 'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
 		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
 	});
 });

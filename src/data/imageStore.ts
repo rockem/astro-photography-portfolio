@@ -90,7 +90,7 @@ function validateGalleryData(gallery: GalleryData) {
  */
 const processImages = (images: GalleryImage[], galleryPath: string): Image[] => {
 	return images.reduce<Image[]>((acc, imageEntry) => {
-		const imagePath = path.join('/', path.parse(galleryPath).dir, imageEntry.path);
+		const imagePath = path.posix.join('/', path.parse(galleryPath).dir, imageEntry.path);
 		try {
 			acc.push(createImageDataFor(imagePath, imageEntry));
 		} catch (error) {
