@@ -6,39 +6,42 @@ import { getCollections, getImagesByCollection, ImageStoreError } from '../image
 
 const { getImages } = await import('../imageStore.ts');
 
-const testGalleryPath = 'src/data/__tests__/gallery/valid-gallery.yaml';
-
-const invalidGalleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
+const GALLERY = {
+	VALID: 'src/data/__tests__/gallery/valid-gallery.yaml',
+	INVALID: 'src/data/__tests__/gallery/invalid-gallery.yaml',
+	MISSING: 'src/data/__tests__/gallery/no-gallery.yaml',
+	INVALID_COLLECTION: 'src/data/__tests__/gallery/invalid-collection-gallery.yaml',
+};
 
 describe('Images Store', () => {
 	it('should retrieve all present images', async () => {
-		const imagesData = await getImages(testGalleryPath);
+		const imagesData = await getImages(GALLERY.VALID);
 		expect(imagesData).toHaveLength(3);
 		expect(imagesData[0].src).toEqual(kukuTrees);
 		expect(imagesData[1].src).toEqual(popoView);
 		expect(imagesData[2].src).toEqual(landscape);
 	});
 
-	it('should retrieve only featured images', async () => {
-		const images = await getImagesByCollection('featured', testGalleryPath);
-		expect(images).toHaveLength(1);
-		expect(images[0].title).toEqual('Popo View');
+	it('should retrieve images of specific collection', async () => {
+		const images = await getImagesByCollection('featured', GALLERY.VALID);
+		expect(images).toHaveLength(2);
+		expect(images[0].src).toEqual(popoView);
+		expect(images[1].src).toContain(landscape);
 	});
 
-	it('should retrieve images of specific collection', async () => {
-		const images = await getImagesByCollection('popo', testGalleryPath);
+	it('should retrieve title & description', async () => {
+		const images = await getImagesByCollection('popo', GALLERY.VALID);
 		expect(images).toHaveLength(1);
+		expect(images[0].title).toEqual('Popo View');
 		expect(images[0].description).toContain('popo album');
 	});
 
 	it('should fail on getting a collection with invalid gallery yaml', async () => {
-		await expect(getImagesByCollection('kuku', invalidGalleryPath)).rejects.toThrow(
-			ImageStoreError,
-		);
+		await expect(getImagesByCollection('kuku', GALLERY.INVALID)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should retrieve all collection names', async () => {
-		const collections = await getCollections(testGalleryPath);
+		const collections = await getCollections(GALLERY.VALID);
 		expect(collections).toHaveLength(2);
 		expect(collections[0].id).toEqual('kuku');
 		expect(collections[0].name).toEqual('Kuku');
@@ -47,17 +50,14 @@ describe('Images Store', () => {
 	});
 
 	it('should fail on a missing gallery file', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/no-gallery.yaml';
-		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
+		await expect(getImages(GALLERY.MISSING)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should fail on invalid gallery file', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/invalid-gallery.yaml';
-		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
+		await expect(getImages(GALLERY.INVALID)).rejects.toThrow(ImageStoreError);
 	});
 
 	it('should fail on invalid collection', async () => {
-		const galleryPath = 'src/data/__tests__/gallery/invalid-collection-gallery.yaml';
-		await expect(getImages(galleryPath)).rejects.toThrow(ImageStoreError);
+		await expect(getImages(GALLERY.INVALID_COLLECTION)).rejects.toThrow(ImageStoreError);
 	});
 });

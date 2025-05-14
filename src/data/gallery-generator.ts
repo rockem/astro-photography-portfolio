@@ -4,6 +4,7 @@ import yaml from 'js-yaml';
 import path from 'path';
 import fg from 'fast-glob';
 import { type GalleryData, loadGallery, NullGalleryData } from './galleryData.ts';
+import { createGalleryCollection, createGalleryImage } from './galleryEntityFactory.ts';
 
 const defaultGalleryFileName = 'gallery.yaml';
 
@@ -64,7 +65,7 @@ async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
 	});
 	const galleryObj = {
 		collections: createCollectionsFrom(imageFiles, galleryDir),
-		images: createImagesFrom(imageFiles, galleryDir),
+		images: await createImagesFrom(imageFiles, galleryDir),
 	};
 	return galleryObj;
 }
@@ -76,38 +77,13 @@ function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
 
 	return [...uniqueDirNames]
 		.map((dir) => {
-			return {
-				id: dir,
-				name: toReadableCaption(dir),
-			};
+			return createGalleryCollection(dir);
 		})
 		.filter((col) => col.id !== '.');
 }
 
-function toReadableCaption(input: string): string {
-	return input
-		.replace(/[^a-zA-Z0-9]+/g, ' ') // Replace non-alphanumerics with space
-		.split(' ') // Split by space
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize
-		.join(' ');
-}
-
-function createImagesFrom(imageFiles: string[], galleryDir: string) {
-	return imageFiles.map((file) => {
-		const relativePath = path.relative(galleryDir, file);
-		return {
-			path: relativePath,
-			meta: {
-				title: toReadableCaption(path.basename(relativePath, path.extname(relativePath))),
-				description: '',
-				collections: collectionIdForImage(relativePath),
-			},
-		};
-	});
-}
-
-function collectionIdForImage(relativePath: string) {
-	return path.dirname(relativePath) === '.' ? [] : [path.dirname(relativePath)];
+async function createImagesFrom(imageFiles: string[], galleryDir: string) {
+	return await Promise.all(imageFiles.map((file) => createGalleryImage(galleryDir, file)));
 }
 
 async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {

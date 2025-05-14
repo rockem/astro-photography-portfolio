@@ -21,7 +21,7 @@ images:
     meta:
       title: Landscape
       description:
-      collections: []
+      collections: [featured]
 
   - path: popo/unknown.jpg
     meta:
