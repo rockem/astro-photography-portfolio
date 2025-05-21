@@ -6,7 +6,7 @@ collections:
   - id: street
     name: Street
 images:
-  - path: nature/nature-1.jpg
+  - path: nature/without-exif.jpg
     meta:
       title: Nature scene 1
       description: A beautiful nature landscape showcasing natural beauty.

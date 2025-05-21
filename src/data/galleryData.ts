@@ -32,6 +32,7 @@ export interface Collection {
 export interface GalleryImage {
 	path: string;
 	meta: Meta;
+	exif: ImageExif;
 }
 
 /**
@@ -45,6 +46,16 @@ export interface Meta {
 	title: string;
 	description: string;
 	collections: string[];
+}
+
+interface ImageExif {
+	focalLength?: number;
+	iso?: number;
+	fNumber?: number;
+	shutterSpeed?: number;
+	captureDate?: Date;
+	model?: string;
+	lensModel?: string;
 }
 
 /**

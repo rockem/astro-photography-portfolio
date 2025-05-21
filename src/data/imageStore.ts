@@ -30,15 +30,28 @@ const defaultGalleryPath = 'src/gallery/gallery.yaml';
 export const featuredCollectionId = 'featured';
 const builtInCollections = [featuredCollectionId];
 
+interface GetImagesOptions {
+	galleryPath?: string;
+	collection?: string;
+	sortBy?: 'captureDate';
+	order?: 'asc' | 'desc';
+}
+
 /**
- * Loads and processes images from the collections
- * @param {string} [galleryPath=defaultGalleryPath] - @param galleryPath - Path to the gallery yaml file
- * @returns {Promise<Image[]>} Array of processed images
- * @throws {ImageStoreError} If collections.yaml cannot be read or an image is not found
+ * Retrieves images from a specified gallery path and optionally filters them by a collection name.
+ *
+ * @param {GetImagesOptions} [options={}] - Configuration options for retrieving the images.
+ * @param {string} [options.galleryPath=defaultGalleryPath] - The path to the gallery to load the images from.
+ * @param {string} [options.collection] - The name of the collection to filter images by. If not provided, all images are retrieved.
+ * @returns {Promise<Image[]>} Retrieved images.
+ * @throws {ImageStoreError} Throws an error if loading the gallery data fails.
  */
-export const getImages = async (galleryPath: string = defaultGalleryPath): Promise<Image[]> => {
+export const getImages = async (options: GetImagesOptions = {}): Promise<Image[]> => {
+	const { galleryPath = defaultGalleryPath, collection } = options;
 	try {
-		const images = await (await loadGalleryData(galleryPath)).images;
+		let images = (await loadGalleryData(galleryPath)).images;
+		images = filterImagesByCollection(collection, images);
+		images = sortImages(images, options);
 		return processImages(images, galleryPath);
 	} catch (error) {
 		throw new ImageStoreError(
@@ -53,9 +66,8 @@ function getErrorMsgFrom(error: unknown) {
 
 /**
  * Loads collections data from YAML file
- * @param {string} yamlPath - Path to the collections.yaml file
- * @returns {Promise<GalleryData>} Parsed collections data
  * @throws {ImageStoreError} If YAML file cannot be read or parsed
+ * @param galleryPath
  */
 const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	try {
@@ -69,6 +81,13 @@ const loadGalleryData = async (galleryPath: string): Promise<GalleryData> => {
 	}
 };
 
+function filterImagesByCollection(collection: string | undefined, images: GalleryImage[]) {
+	if (collection) {
+		images = images.filter((image) => image.meta.collections.includes(collection));
+	}
+	return images;
+}
+
 function validateGalleryData(gallery: GalleryData) {
 	const collectionIds = gallery.collections.map((col) => col.id).concat(builtInCollections);
 	for (const image of gallery.images) {
@@ -81,9 +100,25 @@ function validateGalleryData(gallery: GalleryData) {
 	}
 }
 
+function sortImages(images: GalleryImage[], options: GetImagesOptions) {
+	const { sortBy, order } = options;
+	let result: GalleryImage[] = images;
+	if (sortBy) {
+		result = images.sort((a, b) => {
+			const dateA = a.exif?.captureDate?.getTime() || 0;
+			const dateB = b.exif?.captureDate?.getTime() || 0;
+			return dateA - dateB;
+		});
+	}
+	if (order === 'desc') {
+		result = images.reverse();
+	}
+	return result;
+}
+
 /**
  * Processes collections images and returns array of Image objects
- * @param {GalleryImage[]} images - Array of collections images to process
+ * @param {GalleryImage[]} images - Array of images to process
  * @param {string} galleryPath - Path to the collections directory
  * @returns {Image[]} Array of processed images with metadata
  * @throws {ImageStoreError} If an image module cannot be found
@@ -107,7 +142,7 @@ const processImages = (images: GalleryImage[], galleryPath: string): Image[] => 
  * @returns {Image} Processed image with metadata
  * @throws {ImageStoreError} If image module cannot be found
  */
-const createImageDataFor = (imagePath: string, img: GalleryImage) => {
+const createImageDataFor = (imagePath: string, img: GalleryImage): Image => {
 	const imageModule = imageModules[imagePath] as ImageModule | undefined;
 
 	if (!imageModule) {
@@ -123,22 +158,8 @@ const createImageDataFor = (imagePath: string, img: GalleryImage) => {
 };
 
 /**
- * Retrieves images belonging to a specific collection
- * @param collection - Collection ID to filter images by
- * @param galleryPath - Path to the gallery yaml file
- * @returns {Promise<Image[]>} Array of images in the specified collection
- */
-export const getImagesByCollection = async (
-	collection: string,
-	galleryPath: string = defaultGalleryPath,
-): Promise<Image[]> => {
-	const images = await getImages(galleryPath);
-	return images.filter((image) => image.collections.includes(collection));
-};
-
-/**
  * Retrieves all collections from the gallery
- * @param galleryPath - Path to the gallery yaml file
+ * @param galleryPath - Path to the gallery YAML file
  * @returns {Promise<Collection[]>} Array of collections
  */
 export const getCollections = async (

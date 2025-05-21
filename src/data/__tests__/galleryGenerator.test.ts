@@ -107,7 +107,7 @@ describe('Test Gallery Generator', () => {
 			const collectionId = 'kuku';
 			const customCollectionName = 'Hello Kuku';
 
-			await updateGalleryCollectionId(collectionId, customCollectionName);
+			await updateCollectionName(collectionId, customCollectionName);
 
 			await generateGallery();
 
@@ -115,7 +115,7 @@ describe('Test Gallery Generator', () => {
 			expect(updatedCollection.name).toEqual(customCollectionName);
 		});
 
-		async function updateGalleryCollectionId(collectionId: string, collectionName: string) {
+		async function updateCollectionName(collectionId: string, collectionName: string) {
 			const collection = findCollectionById(collectionId);
 			if (!collection) throw new Error(`Collection [${collectionId}] not found`);
 			collection.name = collectionName;
@@ -128,4 +128,6 @@ describe('Test Gallery Generator', () => {
 			return collection;
 		}
 	});
+
+	it('should update existing exif data', () => {});
 });
