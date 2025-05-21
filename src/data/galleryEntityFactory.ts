@@ -8,17 +8,27 @@ export const createGalleryImage = async (
 ): Promise<GalleryImage> => {
 	const relativePath = path.relative(galleryDir, file);
 	const exifData = await exifr.parse(file);
-	return {
+	const image = {
 		path: relativePath,
 		meta: {
 			title: toReadableCaption(path.basename(relativePath, path.extname(relativePath))),
 			description: '',
 			collections: collectionIdForImage(relativePath),
 		},
-		exif: {
-			captureDate: new Date(exifData.DateTimeOriginal),
-		},
+		exif: {},
 	};
+	if (exifData) {
+		image.exif = {
+			captureDate: exifData.DateTimeOriginal ? new Date(exifData.DateTimeOriginal) : undefined,
+			fNumber: exifData.FNumber,
+			focalLength: exifData.FocalLength,
+			iso: exifData.ISO,
+			model: exifData.Model,
+			shutterSpeed: 1 / exifData.ExposureTime,
+			lensModel: exifData.LensModel,
+		};
+	}
+	return image;
 };
 
 function toReadableCaption(input: string): string {

@@ -49,7 +49,13 @@ export interface Meta {
 }
 
 interface ImageExif {
-	captureDate: Date;
+	focalLength?: number;
+	iso?: number;
+	fNumber?: number;
+	shutterSpeed?: number;
+	captureDate?: Date;
+	model?: string;
+	lensModel?: string;
 }
 
 /**
