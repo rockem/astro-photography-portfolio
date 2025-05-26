@@ -48,6 +48,16 @@ export interface Meta {
 	collections: string[];
 }
 
+/**
+ * Represents the EXIF data of an image
+ * @property {number} [focalLength] - Focal length of the lens
+ * @property {number} [iso] - ISO sensitivity
+ * @property {number} [fNumber] - Aperture value
+ * @property {number} [shutterSpeed] - Shutter speed
+ * @property {Date} [captureDate] - Date and time of capture
+ * @property {string} [model] - Camera model
+ * @property {string} [lensModel] - Lens model
+ */
 interface ImageExif {
 	focalLength?: number;
 	iso?: number;

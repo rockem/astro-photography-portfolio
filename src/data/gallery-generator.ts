@@ -63,11 +63,10 @@ async function createGalleryObjFrom(galleryDir: string): Promise<GalleryData> {
 	const imageFiles = await fg(`${galleryDir}/**/*.{jpg,jpeg,png}`, {
 		dot: false,
 	});
-	const galleryObj = {
+	return {
 		collections: createCollectionsFrom(imageFiles, galleryDir),
 		images: await createImagesFrom(imageFiles, galleryDir),
 	};
-	return galleryObj;
 }
 
 function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
@@ -83,7 +82,7 @@ function createCollectionsFrom(imageFiles: string[], galleryDir: string) {
 }
 
 async function createImagesFrom(imageFiles: string[], galleryDir: string) {
-	return await Promise.all(imageFiles.map((file) => createGalleryImage(galleryDir, file)));
+	return Promise.all(imageFiles.map((file) => createGalleryImage(galleryDir, file)));
 }
 
 async function writeGalleryYaml(galleryDir: string, galleryObj: GalleryData) {

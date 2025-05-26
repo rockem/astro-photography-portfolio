@@ -117,7 +117,7 @@ function sortImages(images: GalleryImage[], options: GetImagesOptions) {
 }
 
 /**
- * Processes collections images and returns array of Image objects
+ * Processes gallery images and returns an array of Image objects
  * @param {GalleryImage[]} images - Array of images to process
  * @param {string} galleryPath - Path to the collections directory
  * @returns {Image[]} Array of processed images with metadata
