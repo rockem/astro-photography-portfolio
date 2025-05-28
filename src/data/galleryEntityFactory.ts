@@ -20,7 +20,9 @@ export const createGalleryImage = async (
 	console.log(`capture: ${exifData.DateTimeOriginal}`);
 	if (exifData) {
 		image.exif = {
-			captureDate: exifData.DateTimeOriginal ? new Date(exifData.DateTimeOriginal) : undefined,
+			captureDate: exifData.DateTimeOriginal
+				? new Date(`${exifData.DateTimeOriginal} UTC`)
+				: undefined,
 			fNumber: exifData.FNumber,
 			focalLength: exifData.FocalLength,
 			iso: exifData.ISO,
