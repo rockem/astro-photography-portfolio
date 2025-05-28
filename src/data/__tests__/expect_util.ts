@@ -1,9 +1,6 @@
 import { expect } from 'vitest';
 
-export const expectContainsOnlyObjectsWith = <T extends object>(
-	objArray: T[],
-	partials: Partial<T>[],
-) => {
+export const expectContainsOnlyObjectsWith = (objArray: unknown[], partials: unknown[]) => {
 	expect(objArray).toHaveLength(partials.length);
 	const expectedWrapped = partials.map((partial) => wrapWithObjectContaining(partial));
 	expect(objArray).toEqual(expect.arrayContaining(expectedWrapped));

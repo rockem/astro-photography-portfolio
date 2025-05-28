@@ -1,8 +1,8 @@
 ---
 import PhotoGrid from './PhotoGrid.astro';
-import { featuredCollectionId, getImagesByCollection } from '../data/imageStore';
+import { featuredCollectionId, getImages } from '../data/imageStore';
 
-const images = await getImagesByCollection(featuredCollectionId);
+const images = await getImages({ collection: featuredCollectionId });
 ---
 
 <div class="max-w-2xl mx-auto text-center mb-16">
