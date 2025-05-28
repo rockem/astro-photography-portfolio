@@ -104,14 +104,14 @@ function sortImages(images: GalleryImage[], options: GetImagesOptions) {
 	const { sortBy, order } = options;
 	let result: GalleryImage[] = images;
 	if (sortBy) {
-		result = images.sort((a, b) => {
+		result.sort((a, b) => {
 			const dateA = a.exif?.captureDate?.getTime() || 0;
 			const dateB = b.exif?.captureDate?.getTime() || 0;
 			return dateA - dateB;
 		});
 	}
 	if (order === 'desc') {
-		result = images.reverse();
+		result.reverse();
 	}
 	return result;
 }
