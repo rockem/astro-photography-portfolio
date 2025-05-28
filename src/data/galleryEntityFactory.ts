@@ -17,6 +17,7 @@ export const createGalleryImage = async (
 		},
 		exif: {},
 	};
+	console.log(`capture: ${exifData.DateTimeOriginal}`);
 	if (exifData) {
 		image.exif = {
 			captureDate: exifData.DateTimeOriginal ? new Date(exifData.DateTimeOriginal) : undefined,

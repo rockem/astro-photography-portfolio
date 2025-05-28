@@ -10,9 +10,7 @@ describe('test create gallery images', () => {
 			testGalleryPath,
 			path.join(testGalleryPath, 'kuku', 'kuku-trees.jpg'),
 		);
-		expect(image.exif.captureDate?.getTime()).toEqual(
-			new Date('2025-02-21T07:17:14.000Z').getTime(),
-		);
+		expect(image.exif.captureDate).toEqual(new Date('2025-02-21T07:17:14.000Z'));
 		expect(image.exif.fNumber).toEqual(8);
 		expect(image.exif.focalLength).toEqual(28);
 		expect(image.exif.iso).toEqual(100);
