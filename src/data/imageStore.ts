@@ -30,6 +30,13 @@ const defaultGalleryPath = 'src/gallery/gallery.yaml';
 export const featuredCollectionId = 'featured';
 const builtInCollections = [featuredCollectionId];
 
+/**
+ * Options for retrieving images from the gallery
+ * @property {string} [galleryPath] - Path to the gallery YAML file
+ * @property {string} [collection] - Collection name to filter images by
+ * @property {string} [sortBy] - Property to sort images by (e.g., 'captureDate')
+ * @property {'asc' | 'desc'} [order] - Sort order, either ascending or descending
+ */
 interface GetImagesOptions {
 	galleryPath?: string;
 	collection?: string;

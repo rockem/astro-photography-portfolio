@@ -58,7 +58,7 @@ export interface Meta {
  * @property {string} [model] - Camera model
  * @property {string} [lensModel] - Lens model
  */
-interface ImageExif {
+export interface ImageExif {
 	focalLength?: number;
 	iso?: number;
 	fNumber?: number;
