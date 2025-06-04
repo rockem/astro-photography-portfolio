@@ -40,8 +40,11 @@ function mergeGalleriesObj(
 function getUpdatedImageList(targetGalleryObj: GalleryData, sourceGalleryObj: GalleryData) {
 	const imagesMap = new Map(targetGalleryObj.images.map((image) => [image.path, image]));
 	sourceGalleryObj.images.forEach((image) => {
-		if (!imagesMap.get(image.path)) {
+		const existingImage = imagesMap.get(image.path);
+		if (existingImage === undefined) {
 			imagesMap.set(image.path, image);
+		} else {
+			existingImage.exif = image.exif;
 		}
 	});
 	return Array.from(imagesMap.values());

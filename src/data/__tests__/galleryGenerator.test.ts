@@ -2,7 +2,13 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { execa } from 'execa';
 import path from 'path';
 import * as fs from 'node:fs';
-import { type GalleryData, type GalleryImage, loadGallery, type Meta } from '../galleryData.ts';
+import {
+	type GalleryData,
+	type GalleryImage,
+	loadGallery,
+	type Meta,
+	type ImageExif,
+} from '../galleryData.ts';
 import { expectContainsOnlyObjectsWith } from './expect_util.ts';
 import yaml from 'js-yaml';
 
@@ -71,6 +77,12 @@ describe('Test Gallery Generator', () => {
 	});
 
 	describe('Existing gallery', () => {
+		function findImageByPath(path: string): GalleryImage {
+			const image = gallery.images.find((img) => img.path === path);
+			if (!image) throw new Error(`Image [${path}] not found`);
+			return image;
+		}
+
 		it('should not override an existing image meta data', async () => {
 			const imagePath = 'kuku/kuku-trees.jpg';
 			const imageCustomMeta = {
@@ -91,12 +103,6 @@ describe('Test Gallery Generator', () => {
 			const image = findImageByPath(path);
 			image.meta = imageMeta;
 			await writeGalleryFile();
-		}
-
-		function findImageByPath(path: string): GalleryImage {
-			const image = gallery.images.find((img) => img.path === path);
-			if (!image) throw new Error(`Image [${path}] not found`);
-			return image;
 		}
 
 		async function writeGalleryFile() {
@@ -127,7 +133,23 @@ describe('Test Gallery Generator', () => {
 			if (!collection) throw new Error(`Collection [${collectionId}] not found`);
 			return collection;
 		}
-	});
 
-	it('should update existing exif data', () => {});
+		it('should override existing exif data', async () => {
+			const imagePath = 'kuku/kuku-trees.jpg';
+			const image = findImageByPath(imagePath);
+
+			const actualExif = Object.assign({}, image.exif);
+
+			await updateGalleryImageExif(imagePath, { ...actualExif, focalLength: 10 });
+
+			await generateGallery();
+			expect(findImageByPath(imagePath).exif).toEqual(actualExif);
+		});
+
+		async function updateGalleryImageExif(path: string, imageExif: ImageExif) {
+			const image = findImageByPath(path);
+			image.exif = imageExif;
+			await writeGalleryFile();
+		}
+	});
 });
