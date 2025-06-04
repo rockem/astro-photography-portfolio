@@ -1,4 +1,5 @@
 # 📸 Astro Photography Portfolio Template
+[![Build & Test](https://github.com/rockem/astro-photography-portfolio/actions/workflows/test.yml/badge.svg)](https://github.com/rockem/astro-photography-portfolio/actions/workflows/test.yml)
 
 A modern, fast, and highly customizable photography portfolio template built with [Astro](https://astro.build).
 Ideal for photographers who want to showcase their work through a sleek, performant, and professional website.
