@@ -35,50 +35,56 @@ describe('Images Store', () => {
 			expect(images[0].description).toContain('popo album');
 		});
 
-		describe('Failures', () => {
-			it('should fail on a missing gallery file', async () => {
-				await expect(getImages({ galleryPath: GALLERY.MISSING })).rejects.toThrow(ImageStoreError);
-			});
+		it('should retrieve description orientation', async () => {
+			const images = await getImages({ galleryPath: GALLERY.VALID, collection: 'featured' });
+			expect(images[0].description_position).toEqual('left');
+			expect(images[1].description_position).toEqual('bottom');
+		});
+	});
 
-			it('should fail on invalid gallery file', async () => {
-				await expect(getImages({ galleryPath: GALLERY.INVALID })).rejects.toThrow(ImageStoreError);
-			});
-
-			it('should fail on invalid collection', async () => {
-				await expect(getImages({ galleryPath: GALLERY.INVALID_COLLECTION })).rejects.toThrow(
-					ImageStoreError,
-				);
-			});
+	describe('Failures', () => {
+		it('should fail on a missing gallery file', async () => {
+			await expect(getImages({ galleryPath: GALLERY.MISSING })).rejects.toThrow(ImageStoreError);
 		});
 
-		describe('Sorting', () => {
-			it('should sort images by capture date', async () => {
-				const images = await getImages({ galleryPath: GALLERY.VALID, sortBy: 'captureDate' });
-				expect(images[0].src).toEqual(landscape);
-				expect(images[1].src).toEqual(popoView);
-				expect(images[2].src).toEqual(kukuTrees);
-			});
+		it('should fail on invalid gallery file', async () => {
+			await expect(getImages({ galleryPath: GALLERY.INVALID })).rejects.toThrow(ImageStoreError);
+		});
 
-			it('should sort images by capture date in descending order', async () => {
-				const images = await getImages({
-					galleryPath: GALLERY.VALID,
-					sortBy: 'captureDate',
-					order: 'desc',
-				});
-				expect(images[0].src).toEqual(kukuTrees);
-				expect(images[1].src).toEqual(popoView);
-				expect(images[2].src).toEqual(landscape);
-			});
+		it('should fail on invalid collection', async () => {
+			await expect(getImages({ galleryPath: GALLERY.INVALID_COLLECTION })).rejects.toThrow(
+				ImageStoreError,
+			);
+		});
+	});
 
-			it('should retrieve images in reverse order', async () => {
-				const images = await getImages({
-					galleryPath: GALLERY.VALID,
-					order: 'desc',
-				});
-				expect(images[0].src).toEqual(landscape);
-				expect(images[1].src).toEqual(popoView);
-				expect(images[2].src).toEqual(kukuTrees);
+	describe('Sorting', () => {
+		it('should sort images by capture date', async () => {
+			const images = await getImages({ galleryPath: GALLERY.VALID, sortBy: 'captureDate' });
+			expect(images[0].src).toEqual(landscape);
+			expect(images[1].src).toEqual(popoView);
+			expect(images[2].src).toEqual(kukuTrees);
+		});
+
+		it('should sort images by capture date in descending order', async () => {
+			const images = await getImages({
+				galleryPath: GALLERY.VALID,
+				sortBy: 'captureDate',
+				order: 'desc',
 			});
+			expect(images[0].src).toEqual(kukuTrees);
+			expect(images[1].src).toEqual(popoView);
+			expect(images[2].src).toEqual(landscape);
+		});
+
+		it('should retrieve images in reverse order', async () => {
+			const images = await getImages({
+				galleryPath: GALLERY.VALID,
+				order: 'desc',
+			});
+			expect(images[0].src).toEqual(landscape);
+			expect(images[1].src).toEqual(popoView);
+			expect(images[2].src).toEqual(kukuTrees);
 		});
 	});
 

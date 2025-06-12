@@ -40,11 +40,13 @@ export interface GalleryImage {
  * @property {string} path - Relative path to the image file
  * @property {string} title - Title of the image
  * @property {string} description - Detailed description of the image
+ * @property {string} [description_position] - Position of the description ('bottom', 'left', or 'right')
  * @property {string[]} collections - Array of collection IDs the image belongs to
  */
 export interface Meta {
 	title: string;
 	description: string;
+	description_position?: 'bottom' | 'left' | 'right';
 	collections: string[];
 }
 
@@ -79,6 +81,7 @@ export interface Image {
 	src: ImageMetadata;
 	title: string;
 	description: string;
+	description_position: string;
 	collections: string[];
 }
 

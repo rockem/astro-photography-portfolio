@@ -17,6 +17,7 @@ images:
     meta:
       title: Popo View
       description: Amazing view from the popo album
+      description_position: left
       collections: [featured, popo]
     exif:
       captureDate: 2025-03-27T08:22:56.000Z

@@ -20,6 +20,7 @@ const { images } = Astro.props;
 				data-gallery="gallery1"
 				data-type="image"
 				data-glightbox={image.description ? `title: ${image.description}` : undefined}
+				data-desc-position={image.description_position}
 			>
 				<Image
 					src={image.src}

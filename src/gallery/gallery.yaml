@@ -17,6 +17,7 @@ images:
     meta:
       title: Nature scene 3
       description: Breathtaking natural vista showcasing environmental beauty.
+      description_position: left
       collections:
         - featured
         - nature
