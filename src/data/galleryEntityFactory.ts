@@ -1,5 +1,5 @@
 import path from 'path';
-import type { GalleryImage } from './galleryData.ts';
+import type { GalleryImage, ImageExif } from './galleryData.ts';
 import exifr from 'exifr';
 
 export const createGalleryImage = async (
@@ -18,20 +18,26 @@ export const createGalleryImage = async (
 		exif: {},
 	};
 	if (exifData) {
-		image.exif = {
-			captureDate: exifData.DateTimeOriginal
-				? new Date(`${exifData.DateTimeOriginal} UTC`)
-				: undefined,
-			fNumber: exifData.FNumber,
-			focalLength: exifData.FocalLength,
-			iso: exifData.ISO,
-			model: exifData.Model,
-			shutterSpeed: 1 / exifData.ExposureTime,
-			lensModel: exifData.LensModel,
-		};
+		image.exif = getExifFrom(exifData);
 	}
 	return image;
 };
+
+function getExifFrom(exifData: Partial<Record<string, unknown>>): ImageExif {
+	console.log(exifData.DateTimeOriginal);
+	return {
+		captureDate:
+			typeof exifData.DateTimeOriginal === 'object'
+				? new Date(`${exifData.DateTimeOriginal} UTC`)
+				: undefined,
+		fNumber: typeof exifData.FNumber === 'number' ? exifData.FNumber : undefined,
+		focalLength: typeof exifData.FocalLength === 'number' ? exifData.FocalLength : undefined,
+		iso: typeof exifData.ISO === 'number' ? exifData.ISO : undefined,
+		model: typeof exifData.Model === 'string' ? exifData.Model : undefined,
+		shutterSpeed: typeof exifData.ExposureTime === 'number' ? 1 / exifData.ExposureTime : undefined,
+		lensModel: typeof exifData.LensModel === 'string' ? exifData.LensModel : undefined,
+	};
+}
 
 function toReadableCaption(input: string): string {
 	return input
