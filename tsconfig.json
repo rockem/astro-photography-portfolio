@@ -7,9 +7,17 @@
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"types": ["astro/client"]
+		"types": [
+			"astro/client"
+		]
 	},
 	"extends": "astro/tsconfigs/strict",
-	"include": [".astro/types.d.ts", "src/**/*"],
-	"exclude": ["dist"]
+	"include": [
+		".astro/types.d.ts",
+		"src/**/*",
+		"./worker-configuration.d.ts"
+	],
+	"exclude": [
+		"dist"
+	]
 }
